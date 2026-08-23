@@ -512,7 +512,7 @@ export default function GAgadApp() {
           <div style={{ backgroundColor: '#FFFFFF', padding: '16px', borderRadius: '16px', border: '1.5px solid #005CEE', boxShadow: '0 4px 12px rgba(0, 92, 238, 0.08)', marginBottom: '16px' }}>
             {floatBalance === 0 ? (
               <>
-                <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#005CEE', marginBottom: '16px' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: '800', color: '#005CEE', marginBottom: '16px', whiteSpace: 'nowrap', letterSpacing: '-0.5px' }}>
                   Available Restocking Float: ₱{currentSelected.toLocaleString()}
                 </h3>
                 
