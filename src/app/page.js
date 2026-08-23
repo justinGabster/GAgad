@@ -409,15 +409,15 @@ export default function GAgadApp() {
             </div>
           </div>
 
-          <div>
+          <div style={{ marginBottom: '12px' }}>
             <h3 style={{ fontSize: '14px', fontWeight: '700', marginBottom: '8px' }}>2. Anong oras ka pumapakyaw / bagsakan?</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
               {["Madaling Araw (3 AM - 5 AM)", "Umaga (6 AM - 8 AM)", "Tanghali / Hapon"].map(time => (
                 <button 
                   key={time}
                   onClick={() => setRestockTime(time)}
                   style={{
-                    padding: '10px 14px', borderRadius: '12px', fontSize: '13px', textAlign: 'left',
+                    padding: '8px 12px', borderRadius: '16px', fontSize: '12px',
                     border: restockTime === time ? '1.5px solid #005CEE' : '1px solid #E2E8F0',
                     backgroundColor: restockTime === time ? '#EFF6FF' : 'white',
                     color: restockTime === time ? '#005CEE' : '#333'
@@ -431,12 +431,20 @@ export default function GAgadApp() {
 
           <div>
             <h3 style={{ fontSize: '14px', fontWeight: '700', marginBottom: '8px' }}>3. Tantiyang benta kada araw?</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
               {["₱1,000 - ₱2,500", "₱2,500 - ₱5,000", "₱5,000+"].map(sales => (
-                <label key={sales} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 14px', border: dailySales === sales ? '1.5px solid #005CEE' : '1px solid #E2E8F0', borderRadius: '12px', backgroundColor: dailySales === sales ? '#EFF6FF' : 'white' }}>
-                  <input type="radio" name="sales" checked={dailySales === sales} onChange={() => setDailySales(sales)} style={{ width: '16px', height: '16px', accentColor: '#005CEE' }} />
-                  <span style={{ fontSize: '13px', color: dailySales === sales ? '#005CEE' : '#333', fontWeight: dailySales === sales ? '600' : '400' }}>{sales}</span>
-                </label>
+                <button 
+                  key={sales}
+                  onClick={() => setDailySales(sales)}
+                  style={{
+                    padding: '8px 12px', borderRadius: '16px', fontSize: '12px',
+                    border: dailySales === sales ? '1.5px solid #005CEE' : '1px solid #E2E8F0',
+                    backgroundColor: dailySales === sales ? '#EFF6FF' : 'white',
+                    color: dailySales === sales ? '#005CEE' : '#333'
+                  }}
+                >
+                  {sales}
+                </button>
               ))}
             </div>
           </div>
