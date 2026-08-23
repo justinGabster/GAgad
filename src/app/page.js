@@ -475,6 +475,32 @@ export default function GAgadApp() {
     const deductRate = insight?.autoDeduct || "8%";
     const currentSelected = selectedFloatAmount || options[1];
 
+    const getSeasonalData = () => {
+      let data = {
+        badge: "📅 Agosto: Panahon ng Tag-ulan",
+        tip: "Dahil tag-ulan ngayong buwan, mabilis maubos ang pampalasa at pang-sabaw. Maglaan ng dagdag na 15% float para sa bagsakan mamaya.",
+        trending: [
+          { name: "🫚 Luya", growth: "+42%" },
+          { name: "🧅 Sibuyas", growth: "+28%" },
+          { name: "🍲 Sayote / Pangsabaw", growth: "+35%" }
+        ]
+      };
+      if (vendorType === "🐟 Isda / Karne") {
+        data.trending = [
+          { name: "🥩 Baka / Nilaga cuts", growth: "+30%" },
+          { name: "🐟 Bangus", growth: "+20%" },
+          { name: "🍗 Manok", growth: "+15%" }
+        ];
+      } else if (vendorType === "🍢 Street Food") {
+        data.trending = [
+          { name: "🍢 Hot Merienda / Sopas", growth: "+45%" },
+          { name: "🧋 Mainit na Taho", growth: "+30%" }
+        ];
+      }
+      return data;
+    };
+    const seasonalData = getSeasonalData();
+
     return (
       <div className="page-container fade-enter-active" style={{ backgroundColor: '#F4F6FB', scrollbarWidth: 'none' }}>
         
@@ -506,11 +532,14 @@ export default function GAgadApp() {
               </div>
 
               {floatBalance > 0 && (
-                <div 
-                  onClick={() => setShowZoomedQR(true)}
-                  style={{ backgroundColor: 'white', borderRadius: '10px', padding: '8px', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.2)', alignSelf: 'flex-start' }}
-                >
-                  <QrCode size={32} color="#005CEE" />
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', alignSelf: 'flex-start' }}>
+                  <div 
+                    onClick={() => setShowZoomedQR(true)}
+                    style={{ backgroundColor: 'white', borderRadius: '10px', padding: '8px', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}
+                  >
+                    <QrCode size={32} color="#005CEE" />
+                  </div>
+                  <img src="/QR_Ph_Logo.svg" alt="QR Ph Logo" style={{ height: '16px', filter: 'drop-shadow(0 0 2px #fff)' }} />
                 </div>
               )}
             </div>
@@ -629,25 +658,45 @@ export default function GAgadApp() {
             </p>
 
             {/* Mini 7-Day Trend Chart */}
-            <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', marginBottom: '12px', border: '1px solid #F1F5F9' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', height: '60px', marginBottom: '8px', gap: '4px' }}>
-                {[{ d: 'M', h: '30%' }, { d: 'T', h: '40%' }, { d: 'W', h: '45%' }, { d: 'T', h: '50%' }, { d: 'F', h: '80%' }, { d: 'S', h: '100%' }, { d: 'S', h: '90%' }].map((day, i) => (
+            <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', marginBottom: '16px', border: '1px solid #F1F5F9' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', height: '70px', marginBottom: '8px', gap: '4px' }}>
+                {[{ d: 'M', h: '40%' }, { d: 'T', h: '45%' }, { d: 'W', h: '50%' }, { d: 'T', h: '55%' }, { d: 'F', h: '70%' }, { d: 'S', h: '95%', val: '₱3.8k' }, { d: 'S', h: '85%' }].map((day, i) => (
                   <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-                    <div style={{ width: '100%', height: day.h, backgroundColor: i >= 4 ? '#005CEE' : '#CBD5E1', borderRadius: '4px 4px 0 0', opacity: i >= 4 ? 1 : 0.6 }}></div>
+                    {day.val && <span style={{ fontSize: '9px', fontWeight: '800', color: '#005CEE', marginBottom: '-2px' }}>{day.val}</span>}
+                    <div style={{ width: '100%', height: day.h, backgroundColor: i >= 5 ? '#005CEE' : '#E2E8F0', borderRadius: '4px 4px 0 0' }}></div>
                   </div>
                 ))}
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 2px' }}>
                 {['M','T','W','T','F','S','S'].map((day, i) => (
-                  <span key={i} style={{ fontSize: '10px', color: '#64748B', fontWeight: i >= 4 ? '700' : '500' }}>{day}</span>
+                  <span key={i} style={{ fontSize: '10px', color: '#64748B', fontWeight: i >= 5 ? '800' : '500' }}>{day}</span>
                 ))}
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '8px', backgroundColor: '#FFFBEB', padding: '12px', borderRadius: '12px', border: '1px solid #FEF3C7' }}>
-              <span style={{ fontSize: '14px' }}>💡</span>
-              <p style={{ fontSize: '12px', color: '#B45309', lineHeight: '1.3' }}>
-                Tip: Mas mataas ang benta tuwing Sabado. I-adjust ang float bago mag-weekend.
+            {/* Monthly Product Trend Widget */}
+            <div style={{ marginBottom: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <span style={{ fontSize: '12px', fontWeight: '600', color: '#1E293B' }}>{seasonalData.badge}</span>
+                <div style={{ backgroundColor: '#DCFCE7', color: '#15803D', padding: '4px 8px', borderRadius: '12px', fontSize: '10px', fontWeight: '700' }}>
+                  🔥 Mataas ang Demand
+                </div>
+              </div>
+              
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {seasonalData.trending.map((t, idx) => (
+                  <span key={idx} style={{ padding: '4px 8px', backgroundColor: '#F8FAFC', color: '#334155', fontSize: '11px', fontWeight: '600', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                    {t.name} <b style={{ color: '#16A34A' }}>{t.growth}</b>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Seasonal Action Nudge Card */}
+            <div style={{ display: 'flex', gap: '10px', backgroundColor: '#FFFBEB', padding: '12px', borderRadius: '12px', border: '1px solid #FDE68A', alignItems: 'flex-start' }}>
+              <span style={{ fontSize: '16px', marginTop: '2px' }}>💡</span>
+              <p style={{ fontSize: '12px', color: '#92400E', lineHeight: '1.4' }}>
+                <strong>Seasonal Tip:</strong> {seasonalData.tip}
               </p>
             </div>
           </div>
