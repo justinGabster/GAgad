@@ -491,49 +491,68 @@ export default function GAgadApp() {
           
           {/* Module 1: GAgad Float (Working Capital Card) */}
           <div style={{ backgroundColor: '#FFFFFF', padding: '16px', borderRadius: '16px', border: '1.5px solid #005CEE', boxShadow: '0 4px 12px rgba(0, 92, 238, 0.08)', marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#005CEE', marginBottom: '16px' }}>
-              Available Restocking Float: ₱{currentSelected.toLocaleString()}
-            </h3>
-            
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-              {options.map((amount, index) => (
+            {floatBalance === 0 ? (
+              <>
+                <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#005CEE', marginBottom: '16px' }}>
+                  Available Restocking Float: ₱{currentSelected.toLocaleString()}
+                </h3>
+                
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+                  {options.map((amount, index) => (
+                    <button 
+                      key={amount}
+                      onClick={() => setSelectedFloatAmount(amount)}
+                      style={{
+                        flex: 1, padding: '12px 0', borderRadius: '12px', fontSize: '14px', fontWeight: '700',
+                        border: currentSelected === amount ? '2px solid #005CEE' : '1px solid #E2E8F0',
+                        backgroundColor: currentSelected === amount ? '#EFF6FF' : 'white',
+                        color: currentSelected === amount ? '#005CEE' : '#475569',
+                        position: 'relative'
+                      }}
+                    >
+                      ₱{amount.toLocaleString()}
+                      {index === 1 && (
+                        <div style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#005CEE', color: 'white', fontSize: '9px', fontWeight: '800', padding: '2px 6px', borderRadius: '10px', whiteSpace: 'nowrap' }}>REC</div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+
+                <p style={{ fontSize: '12px', color: '#475569', marginBottom: '16px', lineHeight: '1.4' }}>
+                  Awtomatikong binabawas ({deductRate}) sa bawat QR Ph benta. Walang fixed due date.
+                </p>
+
                 <button 
-                  key={amount}
-                  onClick={() => setSelectedFloatAmount(amount)}
-                  style={{
-                    flex: 1, padding: '12px 0', borderRadius: '12px', fontSize: '14px', fontWeight: '700',
-                    border: currentSelected === amount ? '2px solid #005CEE' : '1px solid #E2E8F0',
-                    backgroundColor: currentSelected === amount ? '#EFF6FF' : 'white',
-                    color: currentSelected === amount ? '#005CEE' : '#475569',
-                    position: 'relative'
+                  onClick={() => {
+                    setShowConfirmation(true);
+                    setTimeout(() => {
+                      setWalletBalance(prev => prev + selectedFloatAmount);
+                      setFloatBalance(selectedFloatAmount);
+                      setShowConfirmation(false);
+                      setCurrentScreen("DASHBOARD");
+                    }, 2000);
                   }}
+                  style={{ width: '100%', padding: '14px', backgroundColor: '#005CEE', color: 'white', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '14px', boxShadow: '0 4px 12px rgba(0, 92, 238, 0.2)' }}
                 >
-                  ₱{amount.toLocaleString()}
-                  {index === 1 && (
-                    <div style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#005CEE', color: 'white', fontSize: '9px', fontWeight: '800', padding: '2px 6px', borderRadius: '10px', whiteSpace: 'nowrap' }}>REC</div>
-                  )}
+                  Kumuha ng Float Ngayon
                 </button>
-              ))}
-            </div>
-
-            <p style={{ fontSize: '12px', color: '#475569', marginBottom: '16px', lineHeight: '1.4' }}>
-              Awtomatikong binabawas ({deductRate}) sa bawat QR Ph benta. Walang fixed due date.
-            </p>
-
-            <button 
-              onClick={() => {
-                setShowConfirmation(true);
-                setTimeout(() => {
-                  setWalletBalance(prev => prev + selectedFloatAmount);
-                  setFloatBalance(selectedFloatAmount);
-                  setShowConfirmation(false);
-                  setCurrentScreen("DASHBOARD");
-                }, 2000);
-              }}
-              style={{ width: '100%', padding: '14px', backgroundColor: '#005CEE', color: 'white', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '14px', boxShadow: '0 4px 12px rgba(0, 92, 238, 0.2)' }}
-            >
-              Kumuha ng Float Ngayon
-            </button>
+              </>
+            ) : (
+              <>
+                <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#10B981', marginBottom: '8px' }}>
+                  Active Restocking Float
+                </h3>
+                <p style={{ fontSize: '14px', color: '#334155', marginBottom: '16px' }}>
+                  Kasalukuyang nagbabayad ng <strong>₱{floatBalance.toLocaleString()}</strong> float. Awtomatikong nagkakaltas ang {deductRate} sa bawat benta.
+                </p>
+                <button 
+                  onClick={() => setCurrentScreen("DASHBOARD")}
+                  style={{ width: '100%', padding: '14px', backgroundColor: '#EFF6FF', color: '#005CEE', border: '1.5px solid #005CEE', borderRadius: '24px', fontWeight: '700', fontSize: '14px' }}
+                >
+                  View Live Repayment Tracker
+                </button>
+              </>
+            )}
           </div>
 
           {/* Module 3: GInsure Portal Button */}
@@ -647,7 +666,7 @@ export default function GAgadApp() {
         {/* Top Header */}
         <div style={{ backgroundColor: '#005CEE', paddingTop: '16px', paddingBottom: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', padding: '0 16px', color: 'white' }}>
-            <ArrowLeft size={24} onClick={() => setCurrentScreen("HOME")} style={{ cursor: 'pointer', marginRight: '16px' }} />
+            <ArrowLeft size={24} onClick={() => setCurrentScreen("MAIN_HUB")} style={{ cursor: 'pointer', marginRight: '16px' }} />
             <h1 style={{ fontSize: '18px', fontWeight: '600' }}>Live Repayment Tracker</h1>
           </div>
         </div>
