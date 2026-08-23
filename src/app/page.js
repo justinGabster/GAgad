@@ -536,8 +536,28 @@ export default function GAgadApp() {
             </button>
           </div>
 
+          {/* Module 3: Storm-Day Protection (Moved up) */}
+          <div style={{ backgroundColor: '#F0F9FF', padding: '16px', borderRadius: '16px', border: '1px solid #BAE6FD', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+              <div style={{ backgroundColor: 'white', padding: '6px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                <Shield size={18} color="#0369A1" />
+              </div>
+              <h3 style={{ fontSize: '14px', fontWeight: '800', color: '#0369A1' }}>Storm-Day Relief Protection</h3>
+            </div>
+            
+            <p style={{ fontSize: '13px', color: '#0C4A6E', marginBottom: '10px', lineHeight: '1.4' }}>
+              Active (<strong>₱300 non-repayable payout</strong> kapag may PAGASA Signal #1 o heavy rainfall warning sa iyong area).
+            </p>
+            
+            <div style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.6)', padding: '4px 8px', borderRadius: '8px' }}>
+              <p style={{ fontSize: '11px', color: '#0284C7', fontWeight: '600' }}>
+                Hindi utang • Proteksyon mula sa micro-insurance pool.
+              </p>
+            </div>
+          </div>
+
           {/* Module 2: General Insights & Sales Rhythm Card */}
-          <div style={{ backgroundColor: '#FFFFFF', padding: '16px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 10px rgba(0,0,0,0.02)', marginBottom: '16px' }}>
+          <div style={{ backgroundColor: '#FFFFFF', padding: '16px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 10px rgba(0,0,0,0.02)', marginBottom: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
               <div style={{ backgroundColor: '#F8FAFC', padding: '6px', borderRadius: '8px' }}>
                 <Activity size={18} color="#1E293B" />
@@ -569,26 +589,6 @@ export default function GAgadApp() {
               <span style={{ fontSize: '14px' }}>💡</span>
               <p style={{ fontSize: '12px', color: '#B45309', lineHeight: '1.3' }}>
                 Tip: Mas mataas ang benta tuwing Sabado. I-adjust ang float bago mag-weekend.
-              </p>
-            </div>
-          </div>
-
-          {/* Module 3: Storm-Day Protection */}
-          <div style={{ backgroundColor: '#F0F9FF', padding: '16px', borderRadius: '16px', border: '1px solid #BAE6FD', marginBottom: '24px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-              <div style={{ backgroundColor: 'white', padding: '6px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-                <Shield size={18} color="#0369A1" />
-              </div>
-              <h3 style={{ fontSize: '14px', fontWeight: '800', color: '#0369A1' }}>Storm-Day Relief Protection</h3>
-            </div>
-            
-            <p style={{ fontSize: '13px', color: '#0C4A6E', marginBottom: '10px', lineHeight: '1.4' }}>
-              Active (<strong>₱300 non-repayable payout</strong> kapag may PAGASA Signal #1 o heavy rainfall warning sa iyong area).
-            </p>
-            
-            <div style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.6)', padding: '4px 8px', borderRadius: '8px' }}>
-              <p style={{ fontSize: '11px', color: '#0284C7', fontWeight: '600' }}>
-                Hindi utang • Proteksyon mula sa micro-insurance pool.
               </p>
             </div>
           </div>
