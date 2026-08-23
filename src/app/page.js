@@ -551,8 +551,9 @@ export default function GAgadApp() {
           Tanggapin ang ₱{selectedFloatAmount} Float Ngayon
         </button>
       </div>
-    </div>
-  );
+      </div>
+    );
+  };
 
   // --- SCREEN 4: CONFIRMATION MODAL ---
   if (showConfirmation) {
