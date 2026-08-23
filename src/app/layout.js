@@ -4,7 +4,6 @@ export const metadata = {
   title: "GAgad - GCash Micro-Float",
   description: "Adaptive Informal Micro-Float & Resilience Engine",
   manifest: "/manifest.json",
-  themeColor: "#005CEE",
 };
 
 export const viewport = {
@@ -12,6 +11,7 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  themeColor: "#005CEE",
 };
 
 export default function RootLayout({ children }) {
