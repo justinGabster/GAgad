@@ -1,3 +1,4 @@
+@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -37,31 +38,30 @@ html, body {
   padding: 0;
   height: 100%;
   width: 100%;
-  background-color: #e5e5e5; /* Background behind the app simulator */
+  background-color: var(--color-background);
   font-family: var(--font-sans);
   color: var(--color-text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
 * {
   box-sizing: border-box;
 }
 
-/* App Container (iPhone SE Simulator) */
+/* App Container */
 #app-container {
-  width: 375px;
-  height: 667px;
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
   background-color: var(--color-background);
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* IE and Edge */
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border-radius: 20px; /* Simulate some bezel rounding */
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
 #app-container::-webkit-scrollbar {
