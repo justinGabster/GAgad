@@ -1035,7 +1035,7 @@ export default function GAgadApp() {
               </p>
               <ul style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', paddingLeft: '20px', margin: 0 }}>
                 <li style={{ marginBottom: '8px' }}>Ang <strong>{ARCHETYPE_CONFIG[vendorType === "🏪 Sari-Sari" ? "sari-sari" : vendorType === "🍢 Street Food" ? "street-food" : "wet-market"][dailySales]?.deduct || "8%"}</strong> ng bawat QR Ph transaction ay awtomatikong ibabawas bilang pambayad.</li>
-                <li style={{ marginBottom: '8px' }}>Walang fixed due date ang GAgad Float. Magbabayad ka lang kapag may benta.</li>
+                <li style={{ marginBottom: '8px' }}>Walang fixed due date. Automatic, % of daily sales deduction, na may <strong>30-day cap</strong>.</li>
                 <li style={{ marginBottom: '8px' }}>Maaari kang kumuha ulit ng panibagong float kapag 100% nang bayad ang kasalukuyan.</li>
               </ul>
             </div>
