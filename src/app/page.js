@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { UserCircle, HelpCircle, ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, Activity, Zap, Shield, Sun, CloudRain, Send, Smartphone, Landmark, Receipt, PiggyBank, CreditCard, Gift, Bus, Handshake, FastForward, QrCode, Home, Mail, User, RotateCcw } from "lucide-react";
+import { UserCircle, HelpCircle, ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, Activity, Zap, Shield, Sun, Cloud, CloudRain, Send, Smartphone, Landmark, Receipt, PiggyBank, CreditCard, Gift, Bus, Handshake, FastForward, QrCode, Home, Mail, User, RotateCcw } from "lucide-react";
 import Image from 'next/image';
 
 // Mock data and state shape
@@ -871,6 +871,74 @@ export default function GAgadApp() {
         </div>
 
         <div style={{ padding: '16px', marginTop: '-12px', flex: 1 }}>
+          
+          {/* iOS Style Weather Widget */}
+          <div style={{ backgroundColor: '#3A82F6', backgroundImage: 'linear-gradient(180deg, #3A82F6 0%, #2563EB 100%)', padding: '20px', borderRadius: '20px', color: 'white', marginBottom: '16px', boxShadow: '0 8px 16px rgba(37, 99, 235, 0.25)' }}>
+            <p style={{ fontSize: '13px', fontWeight: '500', marginBottom: '20px', lineHeight: '1.4', opacity: 0.95 }}>
+              Maaliwalas ang panahon ngayon. Inaasahan ang pag-ulan bandang 4 PM.
+            </p>
+            
+            {/* Hourly */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: '20px', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '12px', fontWeight: '600' }}>Ngayon</span>
+                <Sun size={24} color="#FDE047" fill="#FDE047" />
+                <span style={{ fontSize: '15px', fontWeight: '700' }}>32°</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '12px', fontWeight: '600' }}>2 PM</span>
+                <Sun size={24} color="#FDE047" fill="#FDE047" />
+                <span style={{ fontSize: '15px', fontWeight: '700' }}>34°</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '12px', fontWeight: '600' }}>3 PM</span>
+                <Cloud size={24} color="#E2E8F0" fill="#E2E8F0" />
+                <span style={{ fontSize: '15px', fontWeight: '700' }}>31°</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '12px', fontWeight: '600' }}>4 PM</span>
+                <CloudRain size={24} color="#93C5FD" fill="#93C5FD" />
+                <span style={{ fontSize: '15px', fontWeight: '700' }}>28°</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '12px', fontWeight: '600' }}>5 PM</span>
+                <CloudRain size={24} color="#93C5FD" fill="#93C5FD" />
+                <span style={{ fontSize: '15px', fontWeight: '700' }}>26°</span>
+              </div>
+            </div>
+
+            {/* Daily */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '14px', fontWeight: '600', width: '64px' }}>Ngayon</span>
+                <Sun size={20} color="#FDE047" fill="#FDE047" style={{ marginRight: '8px' }} />
+                <span style={{ fontSize: '14px', opacity: 0.8, width: '24px' }}>25°</span>
+                <div style={{ flex: 1, margin: '0 12px', height: '4px', backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '2px', overflow: 'hidden' }}>
+                   <div style={{ width: '80%', height: '100%', backgroundColor: '#FDE047', borderRadius: '2px', marginLeft: '10%' }}></div>
+                </div>
+                <span style={{ fontSize: '14px', fontWeight: '700', width: '24px', textAlign: 'right' }}>34°</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '14px', fontWeight: '600', width: '64px' }}>Bukas</span>
+                <CloudRain size={20} color="#93C5FD" fill="#93C5FD" style={{ marginRight: '8px' }} />
+                <span style={{ fontSize: '14px', opacity: 0.8, width: '24px' }}>24°</span>
+                <div style={{ flex: 1, margin: '0 12px', height: '4px', backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '2px', overflow: 'hidden' }}>
+                   <div style={{ width: '60%', height: '100%', backgroundColor: '#93C5FD', borderRadius: '2px', marginLeft: '5%' }}></div>
+                </div>
+                <span style={{ fontSize: '14px', fontWeight: '700', width: '24px', textAlign: 'right' }}>29°</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '14px', fontWeight: '600', width: '64px' }}>Huwebes</span>
+                <CloudRain size={20} color="#93C5FD" fill="#93C5FD" style={{ marginRight: '8px' }} />
+                <span style={{ fontSize: '14px', opacity: 0.8, width: '24px' }}>23°</span>
+                <div style={{ flex: 1, margin: '0 12px', height: '4px', backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '2px', overflow: 'hidden' }}>
+                   <div style={{ width: '40%', height: '100%', backgroundColor: '#93C5FD', borderRadius: '2px', marginLeft: '0%' }}></div>
+                </div>
+                <span style={{ fontSize: '14px', fontWeight: '700', width: '24px', textAlign: 'right' }}>27°</span>
+              </div>
+            </div>
+          </div>
+
           <div style={{ backgroundColor: '#FFFFFF', padding: '20px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
               <div style={{ backgroundColor: '#F0F9FF', padding: '10px', borderRadius: '12px', border: '1px solid #BAE6FD' }}>
