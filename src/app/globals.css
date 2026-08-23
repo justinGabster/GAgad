@@ -1,49 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colors */
+  --color-primary: #005CEE;
+  --color-primary-dark: #004bbb;
+  --color-primary-light: #e6f0fd;
+  --color-success: #00C48C;
+  --color-success-light: #e6f9f4;
+  --color-relief: #0EA5E9;
+  --color-relief-light: #F0F9FF;
+  --color-relief-border: #BAE6FD;
+  --color-warning: #F59E0B;
+  --color-background: #F4F6FB;
+  --color-surface: #FFFFFF;
+  --color-text-primary: #171717;
+  --color-text-secondary: #6B7280;
+  --color-border: #E5E7EB;
+
+  /* Typography */
+  --font-sans: 'Outfit', sans-serif;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 14px rgba(0, 80, 200, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html {
+html, body {
+  margin: 0;
+  padding: 0;
   height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
+  width: 100%;
+  background-color: #e5e5e5; /* Background behind the app simulator */
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
   display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
+}
+
+/* App Container (iPhone SE Simulator) */
+#app-container {
+  width: 375px;
+  height: 667px;
+  background-color: var(--color-background);
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border-radius: 20px; /* Simulate some bezel rounding */
+}
+
+#app-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Safe Area Layout (16px side, 24px bottom) */
+.page-container {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 24px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Utility Classes */
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  width: 100%;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+.btn-outline:active {
+  background-color: var(--color-primary-light);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-primary {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.badge-success {
+  background-color: var(--color-success-light);
+  color: var(--color-success);
+}
+
+h1, h2, h3, h4, h5, h6 {
   margin: 0;
+  font-weight: 700;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+p {
+  margin: 0;
+  line-height: 1.5;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* Specific elements */
+.header-blue {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 1rem 16px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-left: -16px;
+  margin-right: -16px;
+  margin-bottom: 1rem;
+}
+
+.header-blue h1 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-left: 1rem;
+  flex: 1;
 }
