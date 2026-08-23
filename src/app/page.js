@@ -448,27 +448,8 @@ export default function GAgadApp() {
                 style={{ width: '100%', marginBottom: '4px' }}
               />
             </div>
-            
-            <h3 style={{ fontSize: '13px', fontWeight: '700', marginBottom: '6px' }}>4. Piliin ang % ng kaltas per benta:</h3>
-            <div style={{ display: 'flex', gap: '6px' }}>
-              {[5, 6, 7, 8].map(pct => (
-                <button
-                  key={pct}
-                  onClick={() => setCustomDeductRate(pct)}
-                  style={{
-                    flex: 1, padding: '6px 0', borderRadius: '8px', fontSize: '12px', fontWeight: '700',
-                    border: customDeductRate === pct ? '2px solid #005CEE' : '1px solid #E2E8F0',
-                    backgroundColor: customDeductRate === pct ? '#EFF6FF' : 'white',
-                    color: customDeductRate === pct ? '#005CEE' : '#475569',
-                  }}
-                >
-                  {pct}%
-                </button>
-              ))}
-            </div>
           </div>
         </div>
-
         <div style={{ marginTop: '12px', paddingBottom: '8px' }}>
           <button 
             disabled={!isComplete} 
@@ -509,7 +490,7 @@ export default function GAgadApp() {
           <div style={{ padding: '0' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <h2 style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>Aling Tess Fresh Fish • Palengke</h2>
+                <h2 style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>Aling Nena Fresh Fish • Palengke</h2>
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
                   <div style={{ width: '8px', height: '8px', backgroundColor: '#10B981', borderRadius: '50%' }}></div>
@@ -1034,6 +1015,27 @@ export default function GAgadApp() {
                 <li style={{ marginBottom: '8px' }}>Walang fixed due date. Automatic, % of daily sales deduction, na may <strong>30-day cap</strong>.</li>
                 <li style={{ marginBottom: '8px' }}>Maaari kang kumuha ulit ng panibagong float kapag 100% nang bayad ang kasalukuyan.</li>
               </ul>
+            </div>
+
+            <div style={{ marginBottom: '24px' }}>
+              <h3 style={{ fontSize: '13px', fontWeight: '700', marginBottom: '12px', color: '#F8FAFC', textAlign: 'center' }}>Piliin ang % ng kaltas per benta:</h3>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {[5, 6, 7, 8].map(pct => (
+                  <button
+                    key={pct}
+                    onClick={() => setCustomDeductRate(pct)}
+                    style={{
+                      flex: 1, padding: '10px 0', borderRadius: '12px', fontSize: '13px', fontWeight: '700',
+                      border: customDeductRate === pct ? '2px solid #3B82F6' : '1px solid rgba(255,255,255,0.2)',
+                      backgroundColor: customDeductRate === pct ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.05)',
+                      color: customDeductRate === pct ? '#60A5FA' : '#94A3B8',
+                      cursor: 'pointer', transition: 'all 0.2s'
+                    }}
+                  >
+                    {pct}%
+                  </button>
+                ))}
+              </div>
             </div>
             
             <div style={{ backgroundColor: 'white', padding: '12px', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
