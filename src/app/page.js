@@ -29,6 +29,7 @@ export default function GAgadApp() {
   // Simulation State
   const [transactions, setTransactions] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showZoomedQR, setShowZoomedQR] = useState(false);
 
   const ARCHETYPE_CONFIG = {
     "wet-market": {
@@ -474,8 +475,14 @@ export default function GAgadApp() {
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px', color: 'white' }}>
             <ArrowLeft size={24} onClick={() => setCurrentScreen("HOME")} style={{ cursor: 'pointer', marginRight: '16px' }} />
             <h1 style={{ fontSize: '18px', fontWeight: '700' }}>GAgad Negosyo Hub</h1>
-            <div style={{ marginLeft: 'auto' }}>
+            <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
               <UserCircle size={28} color="white" opacity={0.8} />
+              <div 
+                onClick={() => setShowZoomedQR(true)}
+                style={{ backgroundColor: 'white', borderRadius: '4px', padding: '3px', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
+              >
+                <QrCode size={14} color="#005CEE" />
+              </div>
             </div>
           </div>
           <div style={{ padding: '0' }}>
@@ -900,6 +907,28 @@ export default function GAgadApp() {
       {showToast && (
         <div style={{ position: 'absolute', top: '24px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#10B981', color: 'white', padding: '12px 24px', borderRadius: '30px', fontSize: '13px', fontWeight: '600', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)', zIndex: 1000, display: 'flex', alignItems: 'center', gap: '8px', animation: 'fadeInDown 0.3s ease-out' }}>
           <CheckCircle2 size={16} strokeWidth={2.5} /> Negosyante Tag Activated!
+        </div>
+      )}
+
+      {/* Zoomed QR Modal */}
+      {showZoomedQR && (
+        <div 
+          onClick={() => {
+            setShowZoomedQR(false);
+            setCurrentScreen("DASHBOARD");
+          }}
+          style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', animation: 'fadeIn 0.2s ease-out' }}
+        >
+          <div style={{ backgroundColor: 'white', padding: '32px', borderRadius: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', transform: 'scale(1.1)', boxShadow: '0 16px 32px rgba(0,0,0,0.2)' }}>
+            <h2 style={{ fontSize: '16px', fontWeight: '800', color: '#005CEE', marginBottom: '24px' }}>Aling Tess Fresh Fish</h2>
+            <div style={{ padding: '8px', border: '2px dashed #CBD5E1', borderRadius: '12px' }}>
+              <QrCode size={150} color="#1E293B" strokeWidth={1.5} />
+            </div>
+            <p style={{ fontSize: '12px', color: '#64748B', marginTop: '16px', fontWeight: '600' }}>I-scan via QR Ph</p>
+          </div>
+          <p style={{ color: 'white', marginTop: '40px', fontSize: '14px', fontWeight: '600', opacity: 0.9, backgroundColor: 'rgba(255,255,255,0.2)', padding: '10px 20px', borderRadius: '20px' }}>
+            👆 I-tap para sa Live Repayment Tracker
+          </p>
         </div>
       )}
       
