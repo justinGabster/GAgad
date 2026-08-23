@@ -556,6 +556,24 @@ export default function GAgadApp() {
                   Kumuha ng Float Ngayon
                 </button>
               </>
+            ) : floatBalance > 0 && repaidAmount >= floatBalance ? (
+              <>
+                <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#10B981', marginBottom: '8px' }}>
+                  🎉 Float Fully Paid!
+                </h3>
+                <p style={{ fontSize: '14px', color: '#334155', marginBottom: '16px' }}>
+                  Nabayaran mo na ng buo ang iyong <strong>₱{floatBalance.toLocaleString()}</strong> float. Pwede ka nang kumuha ulit para pandagdag puhunan.
+                </p>
+                <button 
+                  onClick={() => {
+                    setFloatBalance(0);
+                    setRepaidAmount(0);
+                  }}
+                  style={{ width: '100%', padding: '14px', backgroundColor: '#005CEE', color: 'white', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '14px', boxShadow: '0 4px 12px rgba(0, 92, 238, 0.2)' }}
+                >
+                  Kumuha Ulit ng Float
+                </button>
+              </>
             ) : (
               <>
                 <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#10B981', marginBottom: '8px' }}>
