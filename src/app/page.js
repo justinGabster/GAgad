@@ -489,20 +489,31 @@ export default function GAgadApp() {
             </div>
           </div>
           <div style={{ padding: '0' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <h2 style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>Aling Tess Fresh Fish • Palengke</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <h2 style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>Aling Tess Fresh Fish • Palengke</h2>
+                
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                  <div style={{ width: '8px', height: '8px', backgroundColor: '#10B981', borderRadius: '50%' }}></div>
+                  <span style={{ fontSize: '12px', color: '#D0E2FF' }}>Negosyante Tag: Good Standing</span>
+                </div>
+
+                <div style={{ marginTop: '16px' }}>
+                  <span style={{ fontSize: '11px', color: '#D0E2FF', textTransform: 'uppercase', letterSpacing: '0.5px' }}>GCash Balance</span>
+                  <div style={{ fontSize: '22px', fontWeight: '800', color: 'white', marginTop: '2px' }}>
+                    ₱ {walletBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                  </div>
+                </div>
+              </div>
+
               {floatBalance > 0 && (
                 <div 
                   onClick={() => setShowZoomedQR(true)}
-                  style={{ backgroundColor: 'white', borderRadius: '10px', padding: '8px', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}
+                  style={{ backgroundColor: 'white', borderRadius: '10px', padding: '8px', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.2)', alignSelf: 'flex-start' }}
                 >
                   <QrCode size={32} color="#005CEE" />
                 </div>
               )}
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
-              <div style={{ width: '8px', height: '8px', backgroundColor: '#10B981', borderRadius: '50%' }}></div>
-              <span style={{ fontSize: '12px', color: '#D0E2FF' }}>Negosyante Tag: Good Standing</span>
             </div>
           </div>
         </div>
