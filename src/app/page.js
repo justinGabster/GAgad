@@ -30,6 +30,7 @@ export default function GAgadApp() {
   const [transactions, setTransactions] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showZoomedQR, setShowZoomedQR] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
   const ARCHETYPE_CONFIG = {
     "wet-market": {
@@ -542,15 +543,7 @@ export default function GAgadApp() {
                 </p>
 
                 <button 
-                  onClick={() => {
-                    setShowConfirmation(true);
-                    setTimeout(() => {
-                      setWalletBalance(prev => prev + selectedFloatAmount);
-                      setFloatBalance(selectedFloatAmount);
-                      setShowConfirmation(false);
-                      setCurrentScreen("DASHBOARD");
-                    }, 2000);
-                  }}
+                  onClick={() => setShowTermsModal(true)}
                   style={{ width: '100%', padding: '14px', backgroundColor: '#005CEE', color: 'white', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '14px', boxShadow: '0 4px 12px rgba(0, 92, 238, 0.2)' }}
                 >
                   Kumuha ng Float Ngayon
@@ -1028,6 +1021,49 @@ export default function GAgadApp() {
           <p style={{ color: 'white', marginTop: '40px', fontSize: '14px', fontWeight: '600', opacity: 0.9, backgroundColor: 'rgba(255,255,255,0.2)', padding: '10px 20px', borderRadius: '20px' }}>
             👆 I-tap para sa Live Repayment Tracker
           </p>
+        </div>
+      )}
+
+      {/* Terms and Conditions Modal */}
+      {showTermsModal && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', animation: 'fadeIn 0.2s ease-out' }}>
+          <div style={{ backgroundColor: 'white', padding: '24px', borderTopLeftRadius: '24px', borderTopRightRadius: '24px', animation: 'fadeInDown 0.3s ease-out', transform: 'translateY(0)' }}>
+            <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#0F172A', marginBottom: '12px' }}>Terms and Conditions</h2>
+            <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', border: '1px solid #E2E8F0', marginBottom: '24px', maxHeight: '30vh', overflowY: 'auto' }}>
+              <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', marginBottom: '12px' }}>
+                Sa pagkuha ng <strong>₱{selectedFloatAmount.toLocaleString()} GAgad Float</strong>, ikaw ay sumasang-ayon sa mga sumusunod:
+              </p>
+              <ul style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', paddingLeft: '20px', margin: 0 }}>
+                <li style={{ marginBottom: '8px' }}>Ang <strong>{ARCHETYPE_CONFIG[vendorType === "🏪 Sari-Sari" ? "sari-sari" : vendorType === "🍢 Street Food" ? "street-food" : "wet-market"][dailySales]?.deduct || "8%"}</strong> ng bawat QR Ph transaction ay awtomatikong ibabawas bilang pambayad.</li>
+                <li style={{ marginBottom: '8px' }}>Walang fixed due date ang GAgad Float. Magbabayad ka lang kapag may benta.</li>
+                <li style={{ marginBottom: '8px' }}>Maaari kang kumuha ulit ng panibagong float kapag 100% nang bayad ang kasalukuyan.</li>
+              </ul>
+            </div>
+            
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button 
+                onClick={() => setShowTermsModal(false)}
+                style={{ flex: 1, padding: '14px', backgroundColor: '#F1F5F9', color: '#475569', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '14px' }}
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={() => {
+                  setShowTermsModal(false);
+                  setShowConfirmation(true);
+                  setTimeout(() => {
+                    setWalletBalance(prev => prev + selectedFloatAmount);
+                    setFloatBalance(selectedFloatAmount);
+                    setShowConfirmation(false);
+                    setCurrentScreen("DASHBOARD");
+                  }, 2000);
+                }}
+                style={{ flex: 1, padding: '14px', backgroundColor: '#005CEE', color: 'white', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '14px' }}
+              >
+                I Agree
+              </button>
+            </div>
+          </div>
         </div>
       )}
       
