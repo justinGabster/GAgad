@@ -493,9 +493,9 @@ export default function GAgadApp() {
               {floatBalance > 0 && (
                 <div 
                   onClick={() => setShowZoomedQR(true)}
-                  style={{ backgroundColor: 'white', borderRadius: '8px', padding: '6px', cursor: 'pointer', boxShadow: '0 2px 6px rgba(0,0,0,0.15)' }}
+                  style={{ backgroundColor: 'white', borderRadius: '10px', padding: '8px', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}
                 >
-                  <QrCode size={24} color="#005CEE" />
+                  <QrCode size={32} color="#005CEE" />
                 </div>
               )}
             </div>
