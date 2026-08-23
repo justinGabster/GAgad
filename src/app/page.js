@@ -650,25 +650,25 @@ export default function GAgadApp() {
   const simulateQRTransaction = () => {
     const grossAmount = Math.floor(Math.random() * 100) + 50; // Random sale between 50 and 150
     const deduction = parseFloat((grossAmount * 0.08).toFixed(2));
-    const netAmount = grossAmount - deduction;
     
     // Check if repayment exceeds float
-    const actualDeduction = (repaidAmount + deduction) > floatBalance ? (floatBalance - repaidAmount) : deduction;
+    const actualDeduction = (repaidAmount + deduction) > floatBalance ? Math.max(0, floatBalance - repaidAmount) : deduction;
     
     if (actualDeduction > 0) {
       setRepaidAmount(prev => parseFloat((prev + actualDeduction).toFixed(2)));
-      setWalletBalance(prev => parseFloat((prev + (grossAmount - actualDeduction)).toFixed(2)));
-      
-      const newTx = {
-        id: Date.now(),
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        desc: `QR Ph Sale - Suki`,
-        gross: grossAmount,
-        deduction: actualDeduction
-      };
-      
-      setTransactions(prev => [newTx, ...prev]);
     }
+    
+    setWalletBalance(prev => parseFloat((prev + (grossAmount - actualDeduction)).toFixed(2)));
+    
+    const newTx = {
+      id: Date.now(),
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      desc: `QR Ph Sale - Suki`,
+      gross: grossAmount,
+      deduction: actualDeduction
+    };
+    
+    setTransactions(prev => [newTx, ...prev]);
   };
 
   const renderScreen5 = () => {
@@ -923,6 +923,7 @@ export default function GAgadApp() {
         <div 
           onClick={() => {
             setShowZoomedQR(false);
+            simulateQRTransaction();
             setCurrentScreen("DASHBOARD");
           }}
           style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', animation: 'fadeIn 0.2s ease-out' }}
