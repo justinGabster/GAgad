@@ -490,12 +490,14 @@ export default function GAgadApp() {
           <div style={{ padding: '0' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <h2 style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>Aling Tess Fresh Fish • Palengke</h2>
-              <div 
-                onClick={() => setShowZoomedQR(true)}
-                style={{ backgroundColor: 'white', borderRadius: '4px', padding: '3px', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
-              >
-                <QrCode size={16} color="#005CEE" />
-              </div>
+              {floatBalance > 0 && (
+                <div 
+                  onClick={() => setShowZoomedQR(true)}
+                  style={{ backgroundColor: 'white', borderRadius: '4px', padding: '3px', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
+                >
+                  <QrCode size={16} color="#005CEE" />
+                </div>
+              )}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
               <div style={{ width: '8px', height: '8px', backgroundColor: '#10B981', borderRadius: '50%' }}></div>
