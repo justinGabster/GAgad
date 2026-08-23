@@ -16,6 +16,7 @@ export default function GAgadApp() {
 
   // Negosyante State
   const [isNegosyanteUnlocked, setIsNegosyanteUnlocked] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   const [vendorType, setVendorType] = useState("");
   const [restockTime, setRestockTime] = useState("");
   const [dailySales, setDailySales] = useState("");
@@ -29,6 +30,91 @@ export default function GAgadApp() {
   const [transactions, setTransactions] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
+  const ARCHETYPE_CONFIG = {
+    "wet-market": {
+      "₱1,000 - ₱2,500":  { min: 500,  rec: 800,  max: 1200, deduct: "8%",  release: "3:30 AM" },
+      "₱2,500 - ₱5,000":  { min: 1000, rec: 1800, max: 2500, deduct: "8%",  release: "3:30 AM" },
+      "₱5,000+": { min: 2000, rec: 3500, max: 5000, deduct: "10%", release: "3:30 AM" }
+    },
+    "street-food": {
+      "₱1,000 - ₱2,500":  { min: 500,  rec: 800,  max: 1200, deduct: "6%",  release: "1:00 PM" },
+      "₱2,500 - ₱5,000":  { min: 1000, rec: 1500, max: 2500, deduct: "7%",  release: "1:00 PM" },
+      "₱5,000+": { min: 1500, rec: 2500, max: 3500, deduct: "8%",  release: "1:00 PM" }
+    },
+    "sari-sari": {
+      "₱1,000 - ₱2,500":  { min: 500,  rec: 1000, max: 1500, deduct: "5%",  release: "8:00 AM" },
+      "₱2,500 - ₱5,000":  { min: 1000, rec: 1800, max: 2500, deduct: "5%",  release: "8:00 AM" },
+      "₱5,000+": { min: 2000, rec: 3000, max: 4500, deduct: "6%",  release: "8:00 AM" }
+    }
+  };
+
+  const getArchetypeInsight = () => {
+    if (!vendorType && !restockTime && !dailySales) return null;
+
+    if (!vendorType || !restockTime || !dailySales) {
+      return {
+        title: "Sinisiyasat ang Iyong Negosyo...",
+        copy: "Kumpletuhin ang tatlong (3) tanong sa ibaba para makita ang katugmang archetype at ma-set ang iyong initial float.",
+        suggestedFloat: "₱--",
+        releaseTime: "--:--",
+        autoDeduct: "--%"
+      };
+    }
+
+    let title = "";
+    let copy = "";
+    
+    let archetypeKey = "wet-market";
+    if (vendorType === "🍢 Street Food") archetypeKey = "street-food";
+    if (vendorType === "🏪 Sari-Sari") archetypeKey = "sari-sari";
+    
+    // Default to lowest tier if invalid
+    const salesKey = dailySales || "₱1,000 - ₱2,500";
+    const config = ARCHETYPE_CONFIG[archetypeKey][salesKey] || ARCHETYPE_CONFIG[archetypeKey]["₱1,000 - ₱2,500"];
+    
+    let suggestedFloat = `₱${config.min.toLocaleString()} - ₱${config.max.toLocaleString()}`;
+    let releaseTime = config.release;
+    let autoDeduct = config.deduct;
+    let floatOptions = [config.min, config.rec, config.max];
+
+    if (vendorType === "🐟 Isda / Karne") {
+      if (restockTime === "Madaling Araw (3 AM - 5 AM)") {
+        if (dailySales === "₱1,000 - ₱2,500") {
+          title = "⚡ Katugma ng 12,400+ Wet Market Vendors";
+          copy = `Karamihan sa namimili tuwing 4 AM bagsakan ay nakakabawi ng benta bago mag-11 AM. Magsisimula sa ${suggestedFloat} float na ire-release ng madaling araw.`;
+        } else if (dailySales === "₱2,500 - ₱5,000") {
+          title = "⚡ Katugma ng 8,900+ Seafood/Meat Vendors";
+          copy = `Mataas na kita tuwing umaga ang na-detect. Naka-set ang initial dawn float mo sa ${suggestedFloat} para may pandagdag ka sa pamamakyaw.`;
+        } else {
+          title = "⚡ High-Volume Wet Market Archetype";
+          copy = `Nakalaan para sa malakihang pamamakyaw tuwing madaling araw na may ₱${config.min.toLocaleString()}+ na initial float.`;
+        }
+      } else {
+        title = "🐟 Morning Market Archetype";
+        copy = "Naka-set para sa mga nagtitinda sa palengke tuwing umaga na may malakas na benta mula 7 AM - 12 PM.";
+      }
+    } else if (vendorType === "🥬 Gulay / Prutas") {
+      title = "🌱 Katugma ng 9,200+ Vegetable & Fruit Vendors";
+      copy = "Naka-on ang spoilage buffer. Naka-set ang float at auto-deductions para sa unti-unting benta sa buong araw. 🌧️ Awtomatikong naka-link ang Storm-Day Parametric relief.";
+    } else if (vendorType === "🍢 Street Food") {
+      if (dailySales === "₱5,000+") {
+        title = "🍢 Katugma ng High-Turnover Food Vendors";
+        copy = "Naka-set para sa malakasang paghahanda at pamimili tuwing hapon at pagbabayad kapag malakas ang benta sa gabi.";
+      } else {
+        title = "🍢 Katugma ng 15,100+ Food & Merienda Vendors";
+        copy = `Kadalasan ang pamimili ng sangkap ay sa hapon at lumalakas ang benta mula 5 PM - 9 PM. Ang float ay ire-release ng ${releaseTime}.`;
+      }
+    } else if (vendorType === "🏪 Sari-Sari") {
+      title = "🏪 Katugma ng 22,000+ Neighborhood Retailers";
+      copy = `Tuloy-tuloy ang benta sa buong araw. Ang float ay naka-set para sa araw ng delivery at may maliit na ${autoDeduct} auto-deductions.`;
+    } else {
+      title = "🔄 Sinusuri ang Profile...";
+      copy = "Pakipili ang iyong pangunahing tinda para makita ang katugmang archetype para sa iyong negosyo.";
+    }
+
+    return { title, copy, suggestedFloat, releaseTime, autoDeduct, floatOptions };
+  };
+
   // --- SCREEN 1: HOME / DASHBOARD (NATIVE CLONE) ---
   const renderScreen1 = () => (
     <div className="page-container fade-enter-active" style={{ padding: 0, backgroundColor: '#F4F6FB', display: 'flex', flexDirection: 'column' }}>
@@ -41,17 +127,7 @@ export default function GAgadApp() {
         {/* Foreground Content */}
         <div style={{ position: 'relative', zIndex: 1 }}>
           
-          {/* iOS Status Bar */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 24px', color: 'white', fontSize: '14px', fontWeight: '600' }}>
-            <span>3:29</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '12px' }}>5G</span>
-              <div style={{ width: '22px', height: '11px', border: '1px solid white', borderRadius: '3px', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ width: '16px', height: '7px', backgroundColor: 'white', borderRadius: '1px' }}></div>
-                <div style={{ position: 'absolute', right: '-3px', top: '3px', width: '2px', height: '3px', backgroundColor: 'white', borderRadius: '1px' }}></div>
-              </div>
-            </div>
-          </div>
+
 
           {/* Hello & Help Row */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px 12px 16px' }}>
@@ -165,53 +241,64 @@ export default function GAgadApp() {
                 </div>
 
                 {/* GAgad Hero Feature Card */}
-                <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '16px', border: '1.5px solid #005CEE', boxShadow: '0 8px 24px rgba(0, 92, 238, 0.08)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                    <div style={{ backgroundColor: '#EFF6FF', padding: '4px 8px', borderRadius: '12px' }}>
-                      <span style={{ fontSize: '9px', fontWeight: '700', color: '#005CEE', letterSpacing: '0.3px' }}>NEW • PARA SA MGA NMSMEs</span>
+                {!isNegosyanteUnlocked ? (
+                  <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '16px', border: '1.5px solid #005CEE', boxShadow: '0 8px 24px rgba(0, 92, 238, 0.08)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                      <div style={{ backgroundColor: '#EFF6FF', padding: '4px 8px', borderRadius: '12px' }}>
+                        <span style={{ fontSize: '9px', fontWeight: '700', color: '#005CEE', letterSpacing: '0.3px' }}>NEW • PARA SA MGA NMSMEs</span>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'center' }}>
-                    <Image 
-                      src="/GAgad%20Logo.png" 
-                      alt="GAgad Logo" 
-                      width={60} 
-                      height={70} 
-                      style={{ objectFit: 'contain' }} 
-                      priority 
-                    />
-                  </div>
-                  
-                  <p style={{ fontSize: '12px', color: '#475569', marginBottom: '12px', lineHeight: '1.3' }}>
-                    Pondo sa umaga, bawas sa benta. Walang fixed due date, walang DTI permit needed.
-                  </p>
+                    
+                    <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'center' }}>
+                      <Image 
+                        src="/GAgad%20Logo.png" 
+                        alt="GAgad Logo" 
+                        width={60} 
+                        height={70} 
+                        style={{ objectFit: 'contain' }} 
+                        priority 
+                      />
+                    </div>
+                    
+                    <p style={{ fontSize: '12px', color: '#475569', marginBottom: '12px', lineHeight: '1.3' }}>
+                      Pondo sa umaga, bawas sa benta. Walang fixed due date, walang DTI permit needed.
+                    </p>
 
-                  {!isNegosyanteUnlocked ? (
                     <button 
                       onClick={() => setCurrentScreen("ONBOARDING")}
                       style={{ width: '100%', padding: '12px 0', backgroundColor: '#005CEE', color: 'white', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(0, 92, 238, 0.2)' }}
                     >
                       I-unlock ang Negosyante Tag <ArrowRight size={16} />
                     </button>
-                  ) : (
-                    floatBalance === 0 ? (
-                      <button 
-                        onClick={() => setCurrentScreen("MAIN_HUB")}
-                        style={{ width: '100%', padding: '12px 0', backgroundColor: '#005CEE', color: 'white', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(0, 92, 238, 0.2)' }}
-                      >
-                        Kumuha ng Float <ArrowRight size={16} />
-                      </button>
-                    ) : (
-                      <button 
-                        onClick={() => setCurrentScreen("DASHBOARD")}
-                        style={{ width: '100%', padding: '12px 0', backgroundColor: 'white', color: '#005CEE', border: '1.5px solid #005CEE', borderRadius: '24px', fontWeight: '700', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
-                      >
-                        View Active Float <ArrowRight size={16} />
-                      </button>
-                    )
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '16px', border: '1.5px solid #10B981', boxShadow: '0 8px 24px rgba(16, 185, 129, 0.1)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                      <div style={{ backgroundColor: '#DCFCE7', padding: '4px 8px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span style={{ fontSize: '9px', fontWeight: '800', color: '#15803D', letterSpacing: '0.5px' }}>✔ NEGOSYANTE TAG: ACTIVE</span>
+                      </div>
+                      <span style={{ fontSize: '14px' }}>⚡</span>
+                    </div>
+                    
+                    <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#005CEE', marginBottom: '4px' }}>GAgad Negosyo Hub</h3>
+                    <p style={{ fontSize: '12px', color: '#475569', marginBottom: '12px', lineHeight: '1.4' }}>
+                      Naka-calibrate sa iyong negosyo profile. Buksan para sa Float, Benta Insights, at Storm Insurance.
+                    </p>
+
+                    <div style={{ backgroundColor: '#F8FAFC', padding: '10px 12px', borderRadius: '8px', marginBottom: '16px', border: '1px solid #E2E8F0' }}>
+                      <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B' }}>
+                        Available Float: {getArchetypeInsight()?.suggestedFloat || "₱500 - ₱1,200"}
+                      </p>
+                    </div>
+
+                    <button 
+                      onClick={() => setCurrentScreen("MAIN_HUB")}
+                      style={{ width: '100%', padding: '12px 0', backgroundColor: '#005CEE', color: 'white', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(0, 92, 238, 0.2)' }}
+                    >
+                      Buksan ang GAgad Hub <ArrowRight size={16} />
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
@@ -265,90 +352,7 @@ export default function GAgadApp() {
 
   // --- SCREEN 2: NEGOSYANTE TAG ONBOARDING ---
   // --- SCREEN 2: ONBOARDING / NEGOSYANTE SETUP ---
-  const ARCHETYPE_CONFIG = {
-    "wet-market": {
-      "₱1,000 - ₱2,500":  { min: 500,  rec: 800,  max: 1200, deduct: "8%",  release: "3:30 AM" },
-      "₱2,500 - ₱5,000":  { min: 1000, rec: 1800, max: 2500, deduct: "8%",  release: "3:30 AM" },
-      "₱5,000+": { min: 2000, rec: 3500, max: 5000, deduct: "10%", release: "3:30 AM" }
-    },
-    "street-food": {
-      "₱1,000 - ₱2,500":  { min: 500,  rec: 800,  max: 1200, deduct: "6%",  release: "1:00 PM" },
-      "₱2,500 - ₱5,000":  { min: 1000, rec: 1500, max: 2500, deduct: "7%",  release: "1:00 PM" },
-      "₱5,000+": { min: 1500, rec: 2500, max: 3500, deduct: "8%",  release: "1:00 PM" }
-    },
-    "sari-sari": {
-      "₱1,000 - ₱2,500":  { min: 500,  rec: 1000, max: 1500, deduct: "5%",  release: "8:00 AM" },
-      "₱2,500 - ₱5,000":  { min: 1000, rec: 1800, max: 2500, deduct: "5%",  release: "8:00 AM" },
-      "₱5,000+": { min: 2000, rec: 3000, max: 4500, deduct: "6%",  release: "8:00 AM" }
-    }
-  };
 
-  const getArchetypeInsight = () => {
-    if (!vendorType && !restockTime && !dailySales) return null;
-
-    if (!vendorType || !restockTime || !dailySales) {
-      return {
-        title: "Sinisiyasat ang Iyong Negosyo...",
-        copy: "Kumpletuhin ang tatlong (3) tanong sa ibaba para makita ang katugmang archetype at ma-set ang iyong initial float.",
-        suggestedFloat: "₱--",
-        releaseTime: "--:--",
-        autoDeduct: "--%"
-      };
-    }
-
-    let title = "";
-    let copy = "";
-    
-    let archetypeKey = "wet-market";
-    if (vendorType === "🍢 Street Food") archetypeKey = "street-food";
-    if (vendorType === "🏪 Sari-Sari") archetypeKey = "sari-sari";
-    
-    // Default to lowest tier if invalid
-    const salesKey = dailySales || "₱1,000 - ₱2,500";
-    const config = ARCHETYPE_CONFIG[archetypeKey][salesKey] || ARCHETYPE_CONFIG[archetypeKey]["₱1,000 - ₱2,500"];
-    
-    let suggestedFloat = `₱${config.min.toLocaleString()} - ₱${config.max.toLocaleString()}`;
-    let releaseTime = config.release;
-    let autoDeduct = config.deduct;
-    let floatOptions = [config.min, config.rec, config.max];
-
-    if (vendorType === "🐟 Isda / Karne") {
-      if (restockTime === "Madaling Araw (3 AM - 5 AM)") {
-        if (dailySales === "₱1,000 - ₱2,500") {
-          title = "⚡ Katugma ng 12,400+ Wet Market Vendors";
-          copy = `Karamihan sa namimili tuwing 4 AM bagsakan ay nakakabawi ng benta bago mag-11 AM. Magsisimula sa ${suggestedFloat} float na ire-release ng madaling araw.`;
-        } else if (dailySales === "₱2,500 - ₱5,000") {
-          title = "⚡ Katugma ng 8,900+ Seafood/Meat Vendors";
-          copy = `Mataas na kita tuwing umaga ang na-detect. Naka-set ang initial dawn float mo sa ${suggestedFloat} para may pandagdag ka sa pamamakyaw.`;
-        } else {
-          title = "⚡ High-Volume Wet Market Archetype";
-          copy = `Nakalaan para sa malakihang pamamakyaw tuwing madaling araw na may ₱${config.min.toLocaleString()}+ na initial float.`;
-        }
-      } else {
-        title = "🐟 Morning Market Archetype";
-        copy = "Naka-set para sa mga nagtitinda sa palengke tuwing umaga na may malakas na benta mula 7 AM - 12 PM.";
-      }
-    } else if (vendorType === "🥬 Gulay / Prutas") {
-      title = "🌱 Katugma ng 9,200+ Vegetable & Fruit Vendors";
-      copy = "Naka-on ang spoilage buffer. Naka-set ang float at auto-deductions para sa unti-unting benta sa buong araw. 🌧️ Awtomatikong naka-link ang Storm-Day Parametric relief.";
-    } else if (vendorType === "🍢 Street Food") {
-      if (dailySales === "₱5,000+") {
-        title = "🍢 Katugma ng High-Turnover Food Vendors";
-        copy = "Naka-set para sa malakasang paghahanda at pamimili tuwing hapon at pagbabayad kapag malakas ang benta sa gabi.";
-      } else {
-        title = "🍢 Katugma ng 15,100+ Food & Merienda Vendors";
-        copy = `Kadalasan ang pamimili ng sangkap ay sa hapon at lumalakas ang benta mula 5 PM - 9 PM. Ang float ay ire-release ng ${releaseTime}.`;
-      }
-    } else if (vendorType === "🏪 Sari-Sari") {
-      title = "🏪 Katugma ng 22,000+ Neighborhood Retailers";
-      copy = `Tuloy-tuloy ang benta sa buong araw. Ang float ay naka-set para sa araw ng delivery at may maliit na ${autoDeduct} auto-deductions.`;
-    } else {
-      title = "🔄 Sinusuri ang Profile...";
-      copy = "Pakipili ang iyong pangunahing tinda para makita ang katugmang archetype para sa iyong negosyo.";
-    }
-
-    return { title, copy, suggestedFloat, releaseTime, autoDeduct, floatOptions };
-  };
 
   const renderScreen2 = () => {
     const isComplete = vendorType && restockTime && dailySales;
@@ -443,7 +447,9 @@ export default function GAgadApp() {
             style={{ width: '100%', padding: '14px', backgroundColor: isComplete ? '#005CEE' : '#CBD5E1', color: 'white', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '14px' }}
             onClick={() => {
               setIsNegosyanteUnlocked(true);
-              setCurrentScreen("MAIN_HUB");
+              setShowToast(true);
+              setTimeout(() => setShowToast(false), 3000);
+              setCurrentScreen("HOME");
             }}
           >
             I-activate ang Negosyante Tag
@@ -453,7 +459,7 @@ export default function GAgadApp() {
     );
   };
 
-  // --- SCREEN 3: GAGAD MAIN HUB (FLOAT & INSURANCE) ---
+  // --- SCREEN 3: GAGAD MAIN HUB (3-PILLAR NEGOSYO COCKPIT) ---
   const renderScreen3 = () => {
     const insight = getArchetypeInsight();
     const options = insight?.floatOptions || [500, 800, 1200];
@@ -461,94 +467,133 @@ export default function GAgadApp() {
     const currentSelected = selectedFloatAmount || options[1];
 
     return (
-      <div className="page-container fade-enter-active" style={{ backgroundColor: '#F9FAFB' }}>
-        <div className="header-blue">
-          <ArrowLeft size={24} onClick={() => setCurrentScreen("ONBOARDING")} style={{ cursor: 'pointer' }} />
-          <h1>GAgad Hub</h1>
-          <div 
-            onClick={() => setCurrentScreen("ONBOARDING")}
-            style={{ marginLeft: 'auto', width: '32px', height: '32px', backgroundColor: '#ddd', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
-          >
-            <UserCircle size={24} color="#666" />
+      <div className="page-container fade-enter-active" style={{ backgroundColor: '#F4F6FB', scrollbarWidth: 'none' }}>
+        
+        {/* Header */}
+        <div style={{ backgroundColor: '#005CEE', padding: '16px 16px 24px 16px', borderBottomLeftRadius: '24px', borderBottomRightRadius: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px', color: 'white' }}>
+            <ArrowLeft size={24} onClick={() => setCurrentScreen("HOME")} style={{ cursor: 'pointer', marginRight: '16px' }} />
+            <h1 style={{ fontSize: '18px', fontWeight: '700' }}>GAgad Negosyo Hub</h1>
+            <div style={{ marginLeft: 'auto' }}>
+              <UserCircle size={28} color="white" opacity={0.8} />
+            </div>
           </div>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px', padding: '0 4px' }}>
-          <div>
-            <h2 style={{ fontSize: '18px' }}>Store Settings</h2>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-              <div style={{ width: '8px', height: '8px', backgroundColor: 'var(--color-success)', borderRadius: '50%' }}></div>
-              <span style={{ fontSize: '12px', color: 'var(--color-text-secondary)' }}>Negosyante Tag: Good Standing</span>
+          <div style={{ padding: '0 8px' }}>
+            <h2 style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>Aling Tess Fresh Fish • Palengke</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
+              <div style={{ width: '8px', height: '8px', backgroundColor: '#10B981', borderRadius: '50%' }}></div>
+              <span style={{ fontSize: '12px', color: '#D0E2FF' }}>Negosyante Tag: Good Standing</span>
             </div>
           </div>
         </div>
 
-        {/* Module A: The Float */}
-        <div className="card" style={{ marginBottom: '16px', borderTop: '4px solid var(--color-primary)' }}>
-          <h3 style={{ fontSize: '16px', marginBottom: '16px' }}>Available Float Advance</h3>
+        <div style={{ padding: '16px', marginTop: '-20px' }}>
           
-          <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
-            {options.map((amount, index) => (
-              <button 
-                key={amount}
-                onClick={() => setSelectedFloatAmount(amount)}
-                style={{
-                  flex: 1, padding: '12px 0', borderRadius: '12px', fontSize: '16px', fontWeight: '600',
-                  border: currentSelected === amount ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
-                  backgroundColor: currentSelected === amount ? 'var(--color-primary-light)' : 'white',
-                  color: currentSelected === amount ? 'var(--color-primary-dark)' : 'var(--color-text-primary)',
-                  position: 'relative'
-                }}
-              >
-                ₱{amount.toLocaleString()}
-                {index === 1 && (
-                  <div style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'var(--color-primary)', color: 'white', fontSize: '10px', padding: '2px 6px', borderRadius: '10px', whiteSpace: 'nowrap' }}>Recommended</div>
-                )}
-              </button>
-            ))}
+          {/* Module 1: GAgad Float (Working Capital Card) */}
+          <div style={{ backgroundColor: '#FFFFFF', padding: '16px', borderRadius: '16px', border: '1.5px solid #005CEE', boxShadow: '0 4px 12px rgba(0, 92, 238, 0.08)', marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#005CEE', marginBottom: '16px' }}>
+              Available Restocking Float: ₱{currentSelected.toLocaleString()}
+            </h3>
+            
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+              {options.map((amount, index) => (
+                <button 
+                  key={amount}
+                  onClick={() => setSelectedFloatAmount(amount)}
+                  style={{
+                    flex: 1, padding: '12px 0', borderRadius: '12px', fontSize: '14px', fontWeight: '700',
+                    border: currentSelected === amount ? '2px solid #005CEE' : '1px solid #E2E8F0',
+                    backgroundColor: currentSelected === amount ? '#EFF6FF' : 'white',
+                    color: currentSelected === amount ? '#005CEE' : '#475569',
+                    position: 'relative'
+                  }}
+                >
+                  ₱{amount.toLocaleString()}
+                  {index === 1 && (
+                    <div style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#005CEE', color: 'white', fontSize: '9px', fontWeight: '800', padding: '2px 6px', borderRadius: '10px', whiteSpace: 'nowrap' }}>REC</div>
+                  )}
+                </button>
+              ))}
+            </div>
+
+            <p style={{ fontSize: '12px', color: '#475569', marginBottom: '16px', lineHeight: '1.4' }}>
+              Awtomatikong binabawas ({deductRate}) sa bawat QR Ph benta. Walang fixed due date.
+            </p>
+
+            <button 
+              onClick={() => {
+                setShowConfirmation(true);
+                setTimeout(() => {
+                  setWalletBalance(prev => prev + selectedFloatAmount);
+                  setFloatBalance(selectedFloatAmount);
+                  setShowConfirmation(false);
+                  setCurrentScreen("DASHBOARD");
+                }, 2000);
+              }}
+              style={{ width: '100%', padding: '14px', backgroundColor: '#005CEE', color: 'white', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '14px', boxShadow: '0 4px 12px rgba(0, 92, 238, 0.2)' }}
+            >
+              Kumuha ng Float Ngayon
+            </button>
           </div>
 
-          <div style={{ backgroundColor: '#F9FAFB', padding: '12px', borderRadius: '8px', fontSize: '13px', color: 'var(--color-text-secondary)', lineHeight: '1.5' }}>
-            <ul style={{ paddingLeft: '16px', margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <li><strong>Walang fixed calendar due date.</strong> Awtomatikong {deductRate} kaltas sa bawat papasok na QR Ph customer scan.</li>
-              <li><strong>Natural na pagbabayad:</strong> Kung matumal o umulan, babagal din ang kaltas.</li>
-              <li><strong>30-Day Cap Safeguard:</strong> Kung hindi pa tapos sa loob ng 30 araw, magiging standard micro-installment nang walang hidden penalties.</li>
-            </ul>
+          {/* Module 2: General Insights & Sales Rhythm Card */}
+          <div style={{ backgroundColor: '#FFFFFF', padding: '16px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 10px rgba(0,0,0,0.02)', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+              <div style={{ backgroundColor: '#F8FAFC', padding: '6px', borderRadius: '8px' }}>
+                <Activity size={18} color="#1E293B" />
+              </div>
+              <h3 style={{ fontSize: '14px', fontWeight: '800', color: '#1E293B' }}>Negosyo Insights & Pattern</h3>
+            </div>
+            
+            <p style={{ fontSize: '13px', color: '#475569', marginBottom: '16px', lineHeight: '1.4' }}>
+              {insight?.title} ({insight?.copy.substring(0, 80)}...)
+            </p>
+
+            {/* Mini 7-Day Trend Chart */}
+            <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', marginBottom: '12px', border: '1px solid #F1F5F9' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', height: '60px', marginBottom: '8px', gap: '4px' }}>
+                {[{ d: 'M', h: '30%' }, { d: 'T', h: '40%' }, { d: 'W', h: '45%' }, { d: 'T', h: '50%' }, { d: 'F', h: '80%' }, { d: 'S', h: '100%' }, { d: 'S', h: '90%' }].map((day, i) => (
+                  <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                    <div style={{ width: '100%', height: day.h, backgroundColor: i >= 4 ? '#005CEE' : '#CBD5E1', borderRadius: '4px 4px 0 0', opacity: i >= 4 ? 1 : 0.6 }}></div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 2px' }}>
+                {['M','T','W','T','F','S','S'].map((day, i) => (
+                  <span key={i} style={{ fontSize: '10px', color: '#64748B', fontWeight: i >= 4 ? '700' : '500' }}>{day}</span>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '8px', backgroundColor: '#FFFBEB', padding: '12px', borderRadius: '12px', border: '1px solid #FEF3C7' }}>
+              <span style={{ fontSize: '14px' }}>💡</span>
+              <p style={{ fontSize: '12px', color: '#B45309', lineHeight: '1.3' }}>
+                Tip: Mas mataas ang benta tuwing Sabado. I-adjust ang float bago mag-weekend.
+              </p>
+            </div>
           </div>
+
+          {/* Module 3: Storm-Day Protection */}
+          <div style={{ backgroundColor: '#F0F9FF', padding: '16px', borderRadius: '16px', border: '1px solid #BAE6FD', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+              <div style={{ backgroundColor: 'white', padding: '6px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                <Shield size={18} color="#0369A1" />
+              </div>
+              <h3 style={{ fontSize: '14px', fontWeight: '800', color: '#0369A1' }}>Storm-Day Relief Protection</h3>
+            </div>
+            
+            <p style={{ fontSize: '13px', color: '#0C4A6E', marginBottom: '10px', lineHeight: '1.4' }}>
+              Active (<strong>₱300 non-repayable payout</strong> kapag may PAGASA Signal #1 o heavy rainfall warning sa iyong area).
+            </p>
+            
+            <div style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.6)', padding: '4px 8px', borderRadius: '8px' }}>
+              <p style={{ fontSize: '11px', color: '#0284C7', fontWeight: '600' }}>
+                Hindi utang • Proteksyon mula sa micro-insurance pool.
+              </p>
+            </div>
+          </div>
+
         </div>
-
-      {/* Module B: Parametric Insurance */}
-      <div className="card" style={{ marginBottom: '24px', backgroundColor: 'var(--color-relief-light)', borderColor: 'var(--color-relief-border)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <div style={{ padding: '8px', backgroundColor: '#e0f2fe', borderRadius: '50%' }}>
-            <CloudRain size={20} color="var(--color-relief)" />
-          </div>
-          <h3 style={{ fontSize: '16px', color: '#0369a1' }}>Storm-Day Protection</h3>
-        </div>
-        <p style={{ fontSize: '13px', color: '#0c4a6e', marginBottom: '8px' }}>
-          Active Coverage: <strong>₱300 non-repayable payout</strong> kapag may Signal #1 o mataas na rainfall alert mula sa PAGASA.
-        </p>
-        <p style={{ fontSize: '12px', color: '#0284c7', fontStyle: 'italic' }}>
-          Hindi ito utang — tulong-pinansyal ito mula sa micro-insurance pool para sa nasirang paninda.
-        </p>
-      </div>
-
-      <div style={{ marginTop: 'auto', paddingBottom: '16px' }}>
-        <button 
-          className="btn btn-primary" 
-          onClick={() => {
-            setShowConfirmation(true);
-            setTimeout(() => {
-              setWalletBalance(prev => prev + selectedFloatAmount);
-              setFloatBalance(selectedFloatAmount);
-              setShowConfirmation(false);
-              setCurrentScreen("DASHBOARD");
-            }, 2000);
-          }}
-        >
-          Tanggapin ang ₱{selectedFloatAmount} Float Ngayon
-        </button>
-      </div>
       </div>
     );
   };
@@ -784,12 +829,23 @@ export default function GAgadApp() {
       {currentScreen === "ONBOARDING" && renderScreen2()}
       {currentScreen === "MAIN_HUB" && renderScreen3()}
       {currentScreen === "DASHBOARD" && renderScreen5()}
+
+      {/* Global Toast Notification */}
+      {showToast && (
+        <div style={{ position: 'absolute', top: '24px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#10B981', color: 'white', padding: '12px 24px', borderRadius: '30px', fontSize: '13px', fontWeight: '600', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)', zIndex: 1000, display: 'flex', alignItems: 'center', gap: '8px', animation: 'fadeInDown 0.3s ease-out' }}>
+          <CheckCircle2 size={16} strokeWidth={2.5} /> Negosyante Tag Activated!
+        </div>
+      )}
       
       {/* Global CSS specific to page rendering if needed, mostly handled in globals.css */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes bounceIn {
           0% { transform: scale(0.8); opacity: 0; }
           100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeInDown {
+          0% { transform: translate(-50%, -20px); opacity: 0; }
+          100% { transform: translate(-50%, 0); opacity: 1; }
         }
       `}} />
     </div>
