@@ -872,6 +872,31 @@ export default function GAgadApp() {
 
         <div style={{ padding: '16px', marginTop: '-12px', flex: 1 }}>
           
+          <div style={{ backgroundColor: '#FFFFFF', padding: '20px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <div style={{ backgroundColor: '#F0F9FF', padding: '10px', borderRadius: '12px', border: '1px solid #BAE6FD' }}>
+                <Shield size={24} color="#0369A1" />
+              </div>
+              <div>
+                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#0F172A' }}>Storm-Day Relief</h3>
+                <span style={{ fontSize: '13px', color: '#10B981', fontWeight: '600' }}>● Active Protection</span>
+              </div>
+            </div>
+            
+            <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', border: '1px solid #F1F5F9' }}>
+              <p style={{ fontSize: '14px', color: '#334155', marginBottom: '12px', lineHeight: '1.5' }}>
+                Ikaw ay covered ng <strong>₱300 non-repayable payout</strong> sa tuwing may idedeklarang PAGASA Signal #1 o heavy rainfall warning sa iyong registered na area.
+              </p>
+              
+              <div style={{ display: 'flex', gap: '8px', backgroundColor: '#EFF6FF', padding: '12px', borderRadius: '8px', border: '1px solid #BFDBFE' }}>
+                <span style={{ fontSize: '16px' }}>💡</span>
+                <p style={{ fontSize: '12px', color: '#1E40AF', lineHeight: '1.4' }}>
+                  <strong>Hindi ito utang.</strong> Ito ay tulong-pinansyal mula sa micro-insurance pool upang matulungan kang makabawi sa nasirang paninda o matumal na benta tuwing may bagyo.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* iOS Style Weather Widget */}
           <div style={{ backgroundColor: '#3A82F6', backgroundImage: 'linear-gradient(180deg, #3A82F6 0%, #2563EB 100%)', padding: '20px', borderRadius: '20px', color: 'white', marginBottom: '16px', boxShadow: '0 8px 16px rgba(37, 99, 235, 0.25)' }}>
             <p style={{ fontSize: '13px', fontWeight: '500', marginBottom: '20px', lineHeight: '1.4', opacity: 0.95 }}>
@@ -939,37 +964,12 @@ export default function GAgadApp() {
             </div>
           </div>
 
-          <div style={{ backgroundColor: '#FFFFFF', padding: '20px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-              <div style={{ backgroundColor: '#F0F9FF', padding: '10px', borderRadius: '12px', border: '1px solid #BAE6FD' }}>
-                <Shield size={24} color="#0369A1" />
-              </div>
-              <div>
-                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#0F172A' }}>Storm-Day Relief</h3>
-                <span style={{ fontSize: '13px', color: '#10B981', fontWeight: '600' }}>● Active Protection</span>
-              </div>
-            </div>
-            
-            <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', marginBottom: '16px', border: '1px solid #F1F5F9' }}>
-              <p style={{ fontSize: '14px', color: '#334155', marginBottom: '12px', lineHeight: '1.5' }}>
-                Ikaw ay covered ng <strong>₱300 non-repayable payout</strong> sa tuwing may idedeklarang PAGASA Signal #1 o heavy rainfall warning sa iyong registered na area.
-              </p>
-              
-              <div style={{ display: 'flex', gap: '8px', backgroundColor: '#EFF6FF', padding: '12px', borderRadius: '8px', border: '1px solid #BFDBFE' }}>
-                <span style={{ fontSize: '16px' }}>💡</span>
-                <p style={{ fontSize: '12px', color: '#1E40AF', lineHeight: '1.4' }}>
-                  <strong>Hindi ito utang.</strong> Ito ay tulong-pinansyal mula sa micro-insurance pool upang matulungan kang makabawi sa nasirang paninda o matumal na benta tuwing may bagyo.
-                </p>
-              </div>
-            </div>
-
-            <button 
-              onClick={() => setCurrentScreen("MAIN_HUB")}
-              style={{ width: '100%', padding: '14px', backgroundColor: 'white', color: '#0369A1', borderRadius: '24px', border: '1.5px solid #0369A1', fontWeight: '700', fontSize: '14px' }}
-            >
-              Bumalik sa Hub
-            </button>
-          </div>
+          <button 
+            onClick={() => setCurrentScreen("MAIN_HUB")}
+            style={{ width: '100%', padding: '14px', backgroundColor: 'white', color: '#0369A1', borderRadius: '24px', border: '1.5px solid #0369A1', fontWeight: '700', fontSize: '14px', marginBottom: '24px' }}
+          >
+            Bumalik sa Hub
+          </button>
         </div>
       </div>
     );
