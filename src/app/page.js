@@ -478,7 +478,7 @@ export default function GAgadApp() {
               <UserCircle size={28} color="white" opacity={0.8} />
             </div>
           </div>
-          <div style={{ padding: '0 8px' }}>
+          <div style={{ padding: '0' }}>
             <h2 style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>Aling Tess Fresh Fish • Palengke</h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
               <div style={{ width: '8px', height: '8px', backgroundColor: '#10B981', borderRadius: '50%' }}></div>
