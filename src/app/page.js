@@ -536,24 +536,21 @@ export default function GAgadApp() {
             </button>
           </div>
 
-          {/* Module 3: Storm-Day Protection (Moved up) */}
-          <div style={{ backgroundColor: '#F0F9FF', padding: '16px', borderRadius: '16px', border: '1px solid #BAE6FD', marginBottom: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-              <div style={{ backgroundColor: 'white', padding: '6px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-                <Shield size={18} color="#0369A1" />
+          {/* Module 3: GInsure Portal Button */}
+          <div 
+            onClick={() => setCurrentScreen("GINSURE")}
+            style={{ backgroundColor: '#F0F9FF', padding: '16px', borderRadius: '16px', border: '1px solid #BAE6FD', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', boxShadow: '0 2px 8px rgba(3, 105, 161, 0.05)' }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ backgroundColor: 'white', padding: '8px', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                <Shield size={20} color="#0369A1" />
               </div>
-              <h3 style={{ fontSize: '14px', fontWeight: '800', color: '#0369A1' }}>Storm-Day Relief Protection</h3>
+              <div>
+                <h3 style={{ fontSize: '15px', fontWeight: '800', color: '#0369A1' }}>GInsure</h3>
+                <span style={{ fontSize: '12px', color: '#0C4A6E' }}>Storm-Day Relief Protection</span>
+              </div>
             </div>
-            
-            <p style={{ fontSize: '13px', color: '#0C4A6E', marginBottom: '10px', lineHeight: '1.4' }}>
-              Active (<strong>₱300 non-repayable payout</strong> kapag may PAGASA Signal #1 o heavy rainfall warning sa iyong area).
-            </p>
-            
-            <div style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.6)', padding: '4px 8px', borderRadius: '8px' }}>
-              <p style={{ fontSize: '11px', color: '#0284C7', fontWeight: '600' }}>
-                Hindi utang • Proteksyon mula sa micro-insurance pool.
-              </p>
-            </div>
+            <ArrowRight size={18} color="#0369A1" />
           </div>
 
           {/* Module 2: General Insights & Sales Rhythm Card */}
@@ -823,12 +820,62 @@ export default function GAgadApp() {
     );
   };
 
+  // --- SCREEN 6: GINSURE PAGE ---
+  const renderScreen6 = () => {
+    return (
+      <div className="page-container fade-enter-active" style={{ backgroundColor: '#F4F6FB', scrollbarWidth: 'none', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        {/* Header */}
+        <div style={{ backgroundColor: '#0369A1', padding: '16px 16px 24px 16px', borderBottomLeftRadius: '24px', borderBottomRightRadius: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', color: 'white' }}>
+            <ArrowLeft size={24} onClick={() => setCurrentScreen("MAIN_HUB")} style={{ cursor: 'pointer', marginRight: '16px' }} />
+            <h1 style={{ fontSize: '18px', fontWeight: '700' }}>GInsure</h1>
+          </div>
+        </div>
+
+        <div style={{ padding: '16px', marginTop: '-12px', flex: 1 }}>
+          <div style={{ backgroundColor: '#FFFFFF', padding: '20px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <div style={{ backgroundColor: '#F0F9FF', padding: '10px', borderRadius: '12px', border: '1px solid #BAE6FD' }}>
+                <Shield size={24} color="#0369A1" />
+              </div>
+              <div>
+                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#0F172A' }}>Storm-Day Relief</h3>
+                <span style={{ fontSize: '13px', color: '#10B981', fontWeight: '600' }}>● Active Protection</span>
+              </div>
+            </div>
+            
+            <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', marginBottom: '16px', border: '1px solid #F1F5F9' }}>
+              <p style={{ fontSize: '14px', color: '#334155', marginBottom: '12px', lineHeight: '1.5' }}>
+                Ikaw ay covered ng <strong>₱300 non-repayable payout</strong> sa tuwing may idedeklarang PAGASA Signal #1 o heavy rainfall warning sa iyong registered na area.
+              </p>
+              
+              <div style={{ display: 'flex', gap: '8px', backgroundColor: '#EFF6FF', padding: '12px', borderRadius: '8px', border: '1px solid #BFDBFE' }}>
+                <span style={{ fontSize: '16px' }}>💡</span>
+                <p style={{ fontSize: '12px', color: '#1E40AF', lineHeight: '1.4' }}>
+                  <strong>Hindi ito utang.</strong> Ito ay tulong-pinansyal mula sa micro-insurance pool upang matulungan kang makabawi sa nasirang paninda o matumal na benta tuwing may bagyo.
+                </p>
+              </div>
+            </div>
+
+            <button 
+              onClick={() => setCurrentScreen("MAIN_HUB")}
+              style={{ width: '100%', padding: '14px', backgroundColor: 'white', color: '#0369A1', borderRadius: '24px', border: '1.5px solid #0369A1', fontWeight: '700', fontSize: '14px' }}
+            >
+              Bumalik sa Hub
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       {currentScreen === "HOME" && renderScreen1()}
       {currentScreen === "ONBOARDING" && renderScreen2()}
       {currentScreen === "MAIN_HUB" && renderScreen3()}
       {currentScreen === "DASHBOARD" && renderScreen5()}
+      {currentScreen === "GINSURE" && renderScreen6()}
 
       {/* Global Toast Notification */}
       {showToast && (
