@@ -19,7 +19,7 @@ export default function GAgadApp() {
   const [showToast, setShowToast] = useState(false);
   const [vendorType, setVendorType] = useState("");
   const [restockTime, setRestockTime] = useState("");
-  const [dailySales, setDailySales] = useState("");
+  const [dailySales, setDailySales] = useState("₱1,000 - ₱2,500");
   
   // Float State
   const [floatBalance, setFloatBalance] = useState(0); // How much float they have taken
@@ -27,6 +27,8 @@ export default function GAgadApp() {
   const [selectedFloatAmount, setSelectedFloatAmount] = useState(800);
   const [customDeductRate, setCustomDeductRate] = useState(8);
   const [sliderSales, setSliderSales] = useState(4000);
+  const [onboardingSliderSales, setOnboardingSliderSales] = useState(2000);
+  const [isTyphoon, setIsTyphoon] = useState(false);
   
   // Simulation State
   const [transactions, setTransactions] = useState([]);
@@ -363,44 +365,34 @@ export default function GAgadApp() {
     const insight = getArchetypeInsight();
 
     return (
-      <div className="page-container fade-enter-active" style={{ padding: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
-          <ArrowLeft size={24} onClick={() => setCurrentScreen("HOME")} style={{ cursor: 'pointer', marginRight: '16px' }} />
-          <h1 style={{ fontSize: '18px', fontWeight: '700' }}>Negosyante Setup</h1>
+      <div className="page-container fade-enter-active" style={{ padding: '12px 16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+          <ArrowLeft size={20} onClick={() => setCurrentScreen("HOME")} style={{ cursor: 'pointer', marginRight: '12px' }} />
+          <h1 style={{ fontSize: '16px', fontWeight: '700' }}>Negosyante Setup</h1>
         </div>
 
         {/* Dynamic Insight Banner */}
         {insight && (
-          <div style={{ backgroundColor: '#EFF6FF', border: '1px solid #BAE6FD', padding: '12px', borderRadius: '14px', marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '13px', fontWeight: '700', color: '#0369A1', marginBottom: '4px' }}>{insight.title}</h3>
-            <p style={{ fontSize: '12px', color: '#0C4A6E', marginBottom: '10px', lineHeight: '1.3' }}>{insight.copy}</p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', borderTop: '1px solid rgba(186, 230, 253, 0.5)', paddingTop: '10px' }}>
-              <div>
-                <p style={{ fontSize: '9px', color: '#0369A1', marginBottom: '2px', textTransform: 'uppercase', fontWeight: '600' }}>Float</p>
-                <p style={{ fontSize: '11px', fontWeight: '700', color: '#0C4A6E' }}>{insight.suggestedFloat}</p>
-              </div>
-              <div>
-                <p style={{ fontSize: '9px', color: '#0369A1', marginBottom: '2px', textTransform: 'uppercase', fontWeight: '600' }}>Release</p>
-                <p style={{ fontSize: '11px', fontWeight: '700', color: '#0C4A6E' }}>{insight.releaseTime}</p>
-              </div>
-              <div>
-                <p style={{ fontSize: '9px', color: '#0369A1', marginBottom: '2px', textTransform: 'uppercase', fontWeight: '600' }}>Deduct</p>
-                <p style={{ fontSize: '11px', fontWeight: '700', color: '#0C4A6E' }}>{insight.autoDeduct}</p>
-              </div>
+          <div style={{ backgroundColor: '#EFF6FF', border: '1px solid #BAE6FD', padding: '10px 12px', borderRadius: '12px', marginBottom: '12px' }}>
+            <h3 style={{ fontSize: '12px', fontWeight: '700', color: '#0369A1', marginBottom: '2px' }}>{insight.title}</h3>
+            <p style={{ fontSize: '11px', color: '#0C4A6E', marginBottom: '8px', lineHeight: '1.2' }}>{insight.copy}</p>
+            <div style={{ borderTop: '1px solid rgba(186, 230, 253, 0.5)', paddingTop: '6px' }}>
+              <p style={{ fontSize: '9px', color: '#0369A1', marginBottom: '2px', textTransform: 'uppercase', fontWeight: '600' }}>Float</p>
+              <p style={{ fontSize: '11px', fontWeight: '700', color: '#0C4A6E' }}>{insight.suggestedFloat}</p>
             </div>
           </div>
         )}
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <div>
-            <h3 style={{ fontSize: '14px', fontWeight: '700', marginBottom: '8px' }}>1. Ano ang pangunahing tinda mo?</h3>
+            <h3 style={{ fontSize: '13px', fontWeight: '700', marginBottom: '6px' }}>1. Ano ang pangunahing tinda mo?</h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
               {["🐟 Isda / Karne", "🥬 Gulay / Prutas", "🍢 Street Food", "🏪 Sari-Sari"].map(type => (
                 <button 
                   key={type}
                   onClick={() => setVendorType(type)}
                   style={{
-                    padding: '8px 12px', borderRadius: '16px', fontSize: '13px',
+                    padding: '6px 10px', borderRadius: '12px', fontSize: '12px',
                     border: vendorType === type ? '1.5px solid #005CEE' : '1px solid #E2E8F0',
                     backgroundColor: vendorType === type ? '#EFF6FF' : 'white',
                     color: vendorType === type ? '#005CEE' : '#333'
@@ -412,15 +404,15 @@ export default function GAgadApp() {
             </div>
           </div>
 
-          <div style={{ marginBottom: '12px' }}>
-            <h3 style={{ fontSize: '14px', fontWeight: '700', marginBottom: '8px' }}>2. Anong oras ka pumapakyaw / bagsakan?</h3>
+          <div>
+            <h3 style={{ fontSize: '13px', fontWeight: '700', marginBottom: '6px' }}>2. Anong oras ka pumapakyaw / bagsakan?</h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
               {["Madaling Araw (3 AM - 5 AM)", "Umaga (6 AM - 8 AM)", "Tanghali / Hapon"].map(time => (
                 <button 
                   key={time}
                   onClick={() => setRestockTime(time)}
                   style={{
-                    padding: '8px 12px', borderRadius: '16px', fontSize: '12px',
+                    padding: '6px 10px', borderRadius: '12px', fontSize: '12px',
                     border: restockTime === time ? '1.5px solid #005CEE' : '1px solid #E2E8F0',
                     backgroundColor: restockTime === time ? '#EFF6FF' : 'white',
                     color: restockTime === time ? '#005CEE' : '#333'
@@ -433,27 +425,51 @@ export default function GAgadApp() {
           </div>
 
           <div>
-            <h3 style={{ fontSize: '14px', fontWeight: '700', marginBottom: '8px' }}>3. Tantiyang benta kada araw?</h3>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-              {["₱1,000 - ₱2,500", "₱2,500 - ₱5,000", "₱5,000+"].map(sales => (
-                <button 
-                  key={sales}
-                  onClick={() => setDailySales(sales)}
+            <h3 style={{ fontSize: '13px', fontWeight: '700', marginBottom: '6px' }}>3. Tantiyang benta kada araw?</h3>
+            
+            <div style={{ backgroundColor: '#F8FAFC', padding: '10px 12px', borderRadius: '10px', border: '1px solid #E2E8F0', marginBottom: '10px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ fontSize: '12px', color: '#334155', fontWeight: '600' }}>Estimated Daily Sales</span>
+                <span style={{ fontSize: '13px', fontWeight: '800' }}>₱{onboardingSliderSales.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
+              </div>
+              <input 
+                type="range" 
+                min="500" 
+                max="10000" 
+                step="100" 
+                value={onboardingSliderSales} 
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  setOnboardingSliderSales(val);
+                  if (val < 2500) setDailySales("₱1,000 - ₱2,500");
+                  else if (val < 5000) setDailySales("₱2,500 - ₱5,000");
+                  else setDailySales("₱5,000+");
+                }}
+                style={{ width: '100%', marginBottom: '4px' }}
+              />
+            </div>
+            
+            <h3 style={{ fontSize: '13px', fontWeight: '700', marginBottom: '6px' }}>4. Piliin ang % ng kaltas per benta:</h3>
+            <div style={{ display: 'flex', gap: '6px' }}>
+              {[5, 6, 7, 8].map(pct => (
+                <button
+                  key={pct}
+                  onClick={() => setCustomDeductRate(pct)}
                   style={{
-                    padding: '8px 12px', borderRadius: '16px', fontSize: '12px',
-                    border: dailySales === sales ? '1.5px solid #005CEE' : '1px solid #E2E8F0',
-                    backgroundColor: dailySales === sales ? '#EFF6FF' : 'white',
-                    color: dailySales === sales ? '#005CEE' : '#333'
+                    flex: 1, padding: '6px 0', borderRadius: '8px', fontSize: '12px', fontWeight: '700',
+                    border: customDeductRate === pct ? '2px solid #005CEE' : '1px solid #E2E8F0',
+                    backgroundColor: customDeductRate === pct ? '#EFF6FF' : 'white',
+                    color: customDeductRate === pct ? '#005CEE' : '#475569',
                   }}
                 >
-                  {sales}
+                  {pct}%
                 </button>
               ))}
             </div>
           </div>
         </div>
 
-        <div style={{ marginTop: '16px', paddingBottom: '16px' }}>
+        <div style={{ marginTop: '12px', paddingBottom: '8px' }}>
           <button 
             disabled={!isComplete} 
             style={{ width: '100%', padding: '14px', backgroundColor: isComplete ? '#005CEE' : '#CBD5E1', color: 'white', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '14px' }}
@@ -556,51 +572,6 @@ export default function GAgadApp() {
                   <p style={{ fontSize: '12px', color: '#475569', marginBottom: '12px', lineHeight: '1.4' }}>
                     Walang fixed due date. Awtomatikong <strong>{customDeductRate}% kaltas</strong> sa bawat QR Ph benta hanggang matapos.
                   </p>
-                  
-                  {/* Percent Selector */}
-                  <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-                    {[5, 6, 7, 8].map(pct => (
-                      <button
-                        key={pct}
-                        onClick={() => setCustomDeductRate(pct)}
-                        style={{
-                          flex: 1, padding: '8px 0', borderRadius: '8px', fontSize: '13px', fontWeight: '700',
-                          border: customDeductRate === pct ? '2px solid #005CEE' : '1px solid #E2E8F0',
-                          backgroundColor: customDeductRate === pct ? '#EFF6FF' : 'white',
-                          color: customDeductRate === pct ? '#005CEE' : '#475569',
-                        }}
-                      >
-                        {pct}%
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Slider Card */}
-                  <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                      <span style={{ fontSize: '13px', color: '#334155', fontWeight: '600' }}>Estimated Daily Sales</span>
-                      <span style={{ fontSize: '14px', fontWeight: '800' }}>₱{sliderSales.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
-                    </div>
-                    <input 
-                      type="range" 
-                      min="500" 
-                      max="10000" 
-                      step="100" 
-                      value={sliderSales} 
-                      onChange={(e) => setSliderSales(Number(e.target.value))}
-                      style={{ width: '100%', marginBottom: '16px' }}
-                    />
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '11px', color: '#64748B', marginBottom: '4px' }}>Daily Kaltas</div>
-                        <div style={{ fontSize: '16px', fontWeight: '800', color: '#10B981' }}>₱{Math.round(sliderSales * (customDeductRate / 100))}</div>
-                      </div>
-                      <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '11px', color: '#64748B', marginBottom: '4px' }}>Settlement in</div>
-                        <div style={{ fontSize: '16px', fontWeight: '800', color: '#0F172A' }}>~{Math.ceil(currentSelected / (sliderSales * (customDeductRate / 100)))} days</div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <button 
@@ -755,24 +726,24 @@ export default function GAgadApp() {
       <div className="page-container fade-enter-active" style={{ padding: 0, backgroundColor: '#F4F6FB', display: 'flex', flexDirection: 'column' }}>
         
         {/* Top Header */}
-        <div style={{ backgroundColor: '#005CEE', paddingTop: '16px', paddingBottom: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', padding: '0 16px', color: 'white' }}>
+        <div style={{ backgroundColor: '#005CEE', paddingTop: '12px', paddingBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', padding: '0 12px', color: 'white' }}>
             <ArrowLeft size={24} onClick={() => setCurrentScreen("MAIN_HUB")} style={{ cursor: 'pointer', marginRight: '16px' }} />
             <h1 style={{ fontSize: '18px', fontWeight: '600' }}>Live Repayment Tracker</h1>
           </div>
         </div>
 
         {/* Scrollable Content */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '16px', scrollbarWidth: 'none' }}>
+        <div style={{ flex: 1, overflowY: 'auto', padding: '12px', scrollbarWidth: 'none' }}>
           {activeRepaymentTab === "Overview" && (
             <div className="fade-enter-active">
               
               {/* Simulation Action Header (Moved to Overview) */}
-              <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
                 <button 
                   onClick={simulateQRTransaction}
                   disabled={remaining <= 0}
-                  style={{ flex: 1, height: '44px', border: '1.5px dashed #005CEE', backgroundColor: '#EFF6FF', color: '#005CEE', fontSize: '12px', fontWeight: '700', borderRadius: '12px', opacity: remaining <= 0 ? 0.5 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                  style={{ flex: 1, height: '40px', border: '1.5px dashed #005CEE', backgroundColor: '#EFF6FF', color: '#005CEE', fontSize: '12px', fontWeight: '700', borderRadius: '12px', opacity: remaining <= 0 ? 0.5 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 >
                   <QrCode size={16} strokeWidth={2.5} /> + QR Sale
                 </button>
@@ -794,32 +765,32 @@ export default function GAgadApp() {
                     }
                   }}
                   disabled={remaining <= 0}
-                  style={{ flex: 1, height: '44px', border: '1.5px solid #10B981', backgroundColor: '#ECFDF5', color: '#059669', fontSize: '12px', fontWeight: '700', borderRadius: '12px', opacity: remaining <= 0 ? 0.5 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                  style={{ flex: 1, height: '40px', border: '1.5px solid #10B981', backgroundColor: '#ECFDF5', color: '#059669', fontSize: '12px', fontWeight: '700', borderRadius: '12px', opacity: remaining <= 0 ? 0.5 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 >
                   <FastForward size={16} strokeWidth={2.5} /> To 100%
                 </button>
               </div>
 
               {/* Card 1: Float Repayment Progress Card */}
-              <div style={{ backgroundColor: '#FFFFFF', padding: '16px', borderRadius: '16px', marginBottom: '16px', boxShadow: '0 4px 14px rgba(0,0,0,0.05)' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#64748B', textAlign: 'center', marginBottom: '16px' }}>Float Repayment Progress</h3>
+              <div style={{ backgroundColor: '#FFFFFF', padding: '12px', borderRadius: '16px', marginBottom: '12px', boxShadow: '0 4px 14px rgba(0,0,0,0.05)' }}>
+                <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#64748B', textAlign: 'center', marginBottom: '12px' }}>Float Repayment Progress</h3>
                 
-                <div style={{ position: 'relative', width: '160px', height: '160px', margin: '0 auto 24px auto' }}>
+                <div style={{ position: 'relative', width: '130px', height: '130px', margin: '0 auto 12px auto' }}>
                   <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}>
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="#E2E8F0" strokeWidth="10" />
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="#005CEE" strokeWidth="10" 
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#E2E8F0" strokeWidth="8" />
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#005CEE" strokeWidth="8" 
                       strokeDasharray={`${progressPercent * 2.83} 283`} 
                       strokeLinecap="round" style={{ transition: 'stroke-dasharray 0.5s ease' }} 
                     />
                   </svg>
                   <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <span style={{ fontSize: '24px', fontWeight: '800', color: '#1E293B' }}>{progressPercent}%</span>
-                    <span style={{ fontSize: '12px', color: '#64748B' }}>Nabayaran</span>
+                    <span style={{ fontSize: '20px', fontWeight: '800', color: '#1E293B' }}>{progressPercent}%</span>
+                    <span style={{ fontSize: '11px', color: '#64748B' }}>Nabayaran</span>
                   </div>
                 </div>
                 
                 {/* Bottom Metrics Box */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', backgroundColor: '#F8FAFC', padding: '12px', borderRadius: '12px' }}>
                   <div>
                     <p style={{ fontSize: '11px', color: '#64748B', marginBottom: '4px' }}>Total Paid</p>
                     <p style={{ fontSize: '15px', fontWeight: '700', color: '#1E293B' }}>₱{repaidAmount.toFixed(2)}</p>
@@ -832,7 +803,7 @@ export default function GAgadApp() {
 
                 {/* Start Again Action (Only when 100% Repaid) */}
                 {progressPercent === 100 && (
-                  <div style={{ marginTop: '16px', animation: 'fadeIn 0.5s' }}>
+                  <div style={{ marginTop: '12px', animation: 'fadeIn 0.5s' }}>
                     <button 
                       onClick={() => {
                         setFloatBalance(0);
@@ -840,28 +811,28 @@ export default function GAgadApp() {
                         setCurrentScreen("MAIN_HUB");
                       }}
                       style={{
-                        width: '100%', padding: '14px', backgroundColor: '#10B981', color: 'white', 
-                        borderRadius: '12px', border: 'none', fontWeight: '700', fontSize: '14px',
+                        width: '100%', padding: '12px', backgroundColor: '#10B981', color: 'white', 
+                        borderRadius: '12px', border: 'none', fontWeight: '700', fontSize: '13px',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer'
                       }}
                     >
-                      <RotateCcw size={18} strokeWidth={2.5} /> Kumuha Ulit ng Float
+                      <RotateCcw size={16} strokeWidth={2.5} /> Kumuha Ulit ng Float
                     </button>
                   </div>
                 )}
               </div>
 
               {/* Card 2: Smart Merchant Insight Nudge */}
-              <div style={{ backgroundColor: '#FFFBEB', border: '1px solid #FDE68A', padding: '16px', borderRadius: '14px', display: 'flex', gap: '12px', marginBottom: '16px', alignItems: 'flex-start' }}>
-                <Sun size={20} color="#D97706" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <p style={{ fontSize: '12px', color: '#92400E', lineHeight: '1.4' }}>
+              <div style={{ backgroundColor: '#FFFBEB', border: '1px solid #FDE68A', padding: '12px', borderRadius: '14px', display: 'flex', gap: '10px', marginBottom: '12px', alignItems: 'flex-start' }}>
+                <Sun size={18} color="#D97706" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <p style={{ fontSize: '11px', color: '#92400E', lineHeight: '1.4' }}>
                   <strong>Insight:</strong> Mas mataas ang benta mo tuwing Sabado ng umaga. Gusto mo bang i-adjust ang float mo sa ₱1,200 bago mag-weekend?
                 </p>
               </div>
 
               {/* Card 3: 30-Day Cap Countdown */}
-              <div style={{ backgroundColor: 'white', padding: '12px 16px', borderRadius: '14px', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '500' }}>Day 4 of 30 • Auto-deducting 8% per QR Ph transaction.</span>
+              <div style={{ backgroundColor: 'white', padding: '10px 12px', borderRadius: '14px', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontSize: '10px', color: '#64748B', fontWeight: '500' }}>Day 4 of 30 • Auto-deducting 8% per QR Ph transaction.</span>
               </div>
             </div>
           )}
@@ -884,26 +855,18 @@ export default function GAgadApp() {
                     </div>
                   </div>
                 ))}
-                
-                {/* Weather Parametric Telemetry Item */}
-                <div style={{ backgroundColor: '#F0F9FF', padding: '12px', borderRadius: '12px', border: '1px solid #BAE6FD', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <CloudRain size={16} color="#0369A1" />
-                  <p style={{ fontSize: '11px', color: '#0369A1', lineHeight: '1.4' }}>
-                    <strong>PAGASA Sensor:</strong> Normal Weather (Rainfall &lt; 5mm/hr • Flood Risk: Low)
-                  </p>
-                </div>
               </div>
             </div>
           )}
         </div>
 
         {/* Bottom Segmented Sub-Tab Bar */}
-        <div style={{ backgroundColor: 'white', padding: '12px 16px 24px 16px', borderTop: '1px solid #E2E8F0' }}>
+        <div style={{ backgroundColor: 'white', padding: '10px 12px 16px 12px', borderTop: '1px solid #E2E8F0' }}>
           <div style={{ background: '#F1F5F9', padding: '4px', borderRadius: '999px', display: 'flex', gap: '4px' }}>
             <button
               onClick={() => setActiveRepaymentTab("Overview")}
               style={{
-                flex: 1, padding: '10px 0', borderRadius: '999px', border: 'none', fontSize: '13px', fontWeight: '600', transition: 'all 0.2s',
+                flex: 1, padding: '8px 0', borderRadius: '999px', border: 'none', fontSize: '12px', fontWeight: '600', transition: 'all 0.2s',
                 backgroundColor: activeRepaymentTab === "Overview" ? 'white' : 'transparent',
                 color: activeRepaymentTab === "Overview" ? '#005CEE' : '#64748B',
                 boxShadow: activeRepaymentTab === "Overview" ? '0 2px 8px rgba(0,0,0,0.05)' : 'none'
@@ -914,7 +877,7 @@ export default function GAgadApp() {
             <button
               onClick={() => setActiveRepaymentTab("Telemetry")}
               style={{
-                flex: 1, padding: '10px 0', borderRadius: '999px', border: 'none', fontSize: '13px', fontWeight: '600', transition: 'all 0.2s',
+                flex: 1, padding: '8px 0', borderRadius: '999px', border: 'none', fontSize: '12px', fontWeight: '600', transition: 'all 0.2s',
                 backgroundColor: activeRepaymentTab === "Telemetry" ? 'white' : 'transparent',
                 color: activeRepaymentTab === "Telemetry" ? '#005CEE' : '#64748B',
                 boxShadow: activeRepaymentTab === "Telemetry" ? '0 2px 8px rgba(0,0,0,0.05)' : 'none',
@@ -935,113 +898,85 @@ export default function GAgadApp() {
     return (
       <div className="page-container fade-enter-active" style={{ backgroundColor: '#F4F6FB', scrollbarWidth: 'none', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         {/* Header */}
-        <div style={{ backgroundColor: '#0369A1', padding: '16px 16px 24px 16px', borderBottomLeftRadius: '24px', borderBottomRightRadius: '24px' }}>
+        <div style={{ backgroundColor: '#0369A1', padding: '12px 16px 16px 16px', borderBottomLeftRadius: '24px', borderBottomRightRadius: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', color: 'white' }}>
-            <ArrowLeft size={24} onClick={() => setCurrentScreen("MAIN_HUB")} style={{ cursor: 'pointer', marginRight: '16px' }} />
-            <h1 style={{ fontSize: '18px', fontWeight: '700' }}>GInsure</h1>
+            <ArrowLeft size={20} onClick={() => setCurrentScreen("MAIN_HUB")} style={{ cursor: 'pointer', marginRight: '12px' }} />
+            <h1 style={{ fontSize: '16px', fontWeight: '700' }}>GInsure</h1>
           </div>
         </div>
 
-        <div style={{ padding: '16px', marginTop: '-12px', flex: 1 }}>
+        <div style={{ padding: '12px 16px', marginTop: '-16px', flex: 1 }}>
           
-          <div style={{ backgroundColor: '#FFFFFF', padding: '20px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', marginBottom: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-              <div style={{ backgroundColor: '#F0F9FF', padding: '10px', borderRadius: '12px', border: '1px solid #BAE6FD' }}>
-                <Shield size={24} color="#0369A1" />
+          <div style={{ backgroundColor: '#FFFFFF', padding: '12px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', marginBottom: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <div style={{ backgroundColor: '#F0F9FF', padding: '8px', borderRadius: '10px', border: '1px solid #BAE6FD' }}>
+                <Shield size={20} color="#0369A1" />
               </div>
               <div>
-                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#0F172A' }}>Storm-Day Relief</h3>
-                <span style={{ fontSize: '13px', color: '#10B981', fontWeight: '600' }}>● Active Protection</span>
+                <h3 style={{ fontSize: '14px', fontWeight: '800', color: '#0F172A' }}>Storm-Day Relief</h3>
+                <span style={{ fontSize: '11px', color: '#10B981', fontWeight: '600' }}>● Active Protection</span>
               </div>
             </div>
             
-            <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', border: '1px solid #F1F5F9' }}>
-              <p style={{ fontSize: '14px', color: '#334155', marginBottom: '12px', lineHeight: '1.5' }}>
-                Ikaw ay covered ng <strong>₱300 non-repayable payout</strong> sa tuwing may idedeklarang PAGASA Signal #1 o heavy rainfall warning sa iyong registered na area.
+            <div style={{ backgroundColor: '#F8FAFC', padding: '10px', borderRadius: '12px', border: '1px solid #F1F5F9' }}>
+              <p style={{ fontSize: '12px', color: '#334155', marginBottom: '8px', lineHeight: '1.4' }}>
+                Ikaw ay covered ng <strong>₱300 non-repayable payout</strong> sa tuwing may idedeklarang PAGASA Signal #3 o heavy rainfall warning.
               </p>
               
-              <div style={{ display: 'flex', gap: '8px', backgroundColor: '#EFF6FF', padding: '12px', borderRadius: '8px', border: '1px solid #BFDBFE' }}>
-                <span style={{ fontSize: '16px' }}>💡</span>
-                <p style={{ fontSize: '12px', color: '#1E40AF', lineHeight: '1.4' }}>
-                  <strong>Hindi ito utang.</strong> Ito ay tulong-pinansyal mula sa micro-insurance pool upang matulungan kang makabawi sa nasirang paninda o matumal na benta tuwing may bagyo.
+              <div style={{ display: 'flex', gap: '6px', backgroundColor: '#EFF6FF', padding: '8px', borderRadius: '8px', border: '1px solid #BFDBFE' }}>
+                <span style={{ fontSize: '14px' }}>💡</span>
+                <p style={{ fontSize: '11px', color: '#1E40AF', lineHeight: '1.3' }}>
+                  <strong>Hindi ito utang.</strong> Tulong-pinansyal ito para makabawi sa nasirang paninda tuwing may bagyo.
                 </p>
               </div>
             </div>
           </div>
 
           {/* iOS Style Weather Widget */}
-          <div style={{ backgroundColor: '#3A82F6', backgroundImage: 'linear-gradient(180deg, #3A82F6 0%, #2563EB 100%)', padding: '20px', borderRadius: '20px', color: 'white', marginBottom: '16px', boxShadow: '0 8px 16px rgba(37, 99, 235, 0.25)' }}>
-            <p style={{ fontSize: '13px', fontWeight: '500', marginBottom: '20px', lineHeight: '1.4', opacity: 0.95 }}>
+          <div style={{ backgroundColor: '#3A82F6', backgroundImage: 'linear-gradient(180deg, #3A82F6 0%, #2563EB 100%)', padding: '12px', borderRadius: '16px', color: 'white', marginBottom: '8px', boxShadow: '0 8px 16px rgba(37, 99, 235, 0.25)', transition: 'all 0.3s ease' }}>
+            <p style={{ fontSize: '11px', fontWeight: '500', marginBottom: '12px', lineHeight: '1.3', opacity: 0.95 }}>
               Maaliwalas ang panahon ngayon. Inaasahan ang pag-ulan bandang 4 PM.
             </p>
             
             {/* Hourly */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: '20px', marginBottom: '20px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontSize: '12px', fontWeight: '600' }}>Ngayon</span>
-                <Sun size={24} color="#FDE047" fill="#FDE047" />
-                <span style={{ fontSize: '15px', fontWeight: '700' }}>32°</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: '12px', marginBottom: '12px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '10px', fontWeight: '600' }}>Ngayon</span>
+                <Sun size={18} color="#FDE047" fill="#FDE047" />
+                <span style={{ fontSize: '13px', fontWeight: '700' }}>32°</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontSize: '12px', fontWeight: '600' }}>2 PM</span>
-                <Sun size={24} color="#FDE047" fill="#FDE047" />
-                <span style={{ fontSize: '15px', fontWeight: '700' }}>34°</span>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '10px', fontWeight: '600' }}>2 PM</span>
+                <Sun size={18} color="#FDE047" fill="#FDE047" />
+                <span style={{ fontSize: '13px', fontWeight: '700' }}>34°</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontSize: '12px', fontWeight: '600' }}>3 PM</span>
-                <Cloud size={24} color="#E2E8F0" fill="#E2E8F0" />
-                <span style={{ fontSize: '15px', fontWeight: '700' }}>31°</span>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '10px', fontWeight: '600' }}>3 PM</span>
+                <Cloud size={18} color="#E2E8F0" fill="#E2E8F0" />
+                <span style={{ fontSize: '13px', fontWeight: '700' }}>31°</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontSize: '12px', fontWeight: '600' }}>4 PM</span>
-                <CloudRain size={24} color="#93C5FD" fill="#93C5FD" />
-                <span style={{ fontSize: '15px', fontWeight: '700' }}>28°</span>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '10px', fontWeight: '600' }}>4 PM</span>
+                <CloudRain size={18} color="#93C5FD" fill="#93C5FD" />
+                <span style={{ fontSize: '13px', fontWeight: '700' }}>28°</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontSize: '12px', fontWeight: '600' }}>5 PM</span>
-                <CloudRain size={24} color="#93C5FD" fill="#93C5FD" />
-                <span style={{ fontSize: '15px', fontWeight: '700' }}>26°</span>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '10px', fontWeight: '600' }}>5 PM</span>
+                <CloudRain size={18} color="#93C5FD" fill="#93C5FD" />
+                <span style={{ fontSize: '13px', fontWeight: '700' }}>26°</span>
               </div>
             </div>
 
-            {/* Daily */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '14px', fontWeight: '600', width: '64px' }}>Ngayon</span>
-                <Sun size={20} color="#FDE047" fill="#FDE047" style={{ marginRight: '8px' }} />
-                <span style={{ fontSize: '14px', opacity: 0.8, width: '24px' }}>25°</span>
-                <div style={{ flex: 1, margin: '0 12px', height: '4px', backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '2px', overflow: 'hidden' }}>
-                   <div style={{ width: '80%', height: '100%', backgroundColor: '#FDE047', borderRadius: '2px', marginLeft: '10%' }}></div>
-                </div>
-                <span style={{ fontSize: '14px', fontWeight: '700', width: '24px', textAlign: 'right' }}>34°</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '14px', fontWeight: '600', width: '64px' }}>Bukas</span>
-                <CloudRain size={20} color="#93C5FD" fill="#93C5FD" style={{ marginRight: '8px' }} />
-                <span style={{ fontSize: '14px', opacity: 0.8, width: '24px' }}>24°</span>
-                <div style={{ flex: 1, margin: '0 12px', height: '4px', backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '2px', overflow: 'hidden' }}>
-                   <div style={{ width: '60%', height: '100%', backgroundColor: '#93C5FD', borderRadius: '2px', marginLeft: '5%' }}></div>
-                </div>
-                <span style={{ fontSize: '14px', fontWeight: '700', width: '24px', textAlign: 'right' }}>29°</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '14px', fontWeight: '600', width: '64px' }}>Huwebes</span>
-                <CloudRain size={20} color="#93C5FD" fill="#93C5FD" style={{ marginRight: '8px' }} />
-                <span style={{ fontSize: '14px', opacity: 0.8, width: '24px' }}>23°</span>
-                <div style={{ flex: 1, margin: '0 12px', height: '4px', backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '2px', overflow: 'hidden' }}>
-                   <div style={{ width: '40%', height: '100%', backgroundColor: '#93C5FD', borderRadius: '2px', marginLeft: '0%' }}></div>
-                </div>
-                <span style={{ fontSize: '14px', fontWeight: '700', width: '24px', textAlign: 'right' }}>27°</span>
-              </div>
+            {/* Simulate Action */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <button 
+                onClick={() => setIsTyphoon(true)}
+                style={{ width: '100%', padding: '10px', backgroundColor: 'rgba(255,255,255,0.2)', color: 'white', borderRadius: '10px', border: '1px dashed rgba(255,255,255,0.5)', fontWeight: '600', fontSize: '12px', cursor: 'pointer' }}
+              >
+                Simulate Signal #3 Rain
+              </button>
             </div>
           </div>
-
-          <button 
-            onClick={() => setCurrentScreen("MAIN_HUB")}
-            style={{ width: '100%', padding: '14px', backgroundColor: 'white', color: '#0369A1', borderRadius: '24px', border: '1.5px solid #0369A1', fontWeight: '700', fontSize: '14px', marginBottom: '24px' }}
-          >
-            Bumalik sa Hub
-          </button>
         </div>
       </div>
     );
@@ -1058,7 +993,7 @@ export default function GAgadApp() {
       {/* Global Toast Notification */}
       {showToast && (
         <div style={{ position: 'absolute', top: '24px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#10B981', color: 'white', padding: '12px 24px', borderRadius: '30px', fontSize: '13px', fontWeight: '600', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)', zIndex: 1000, display: 'flex', alignItems: 'center', gap: '8px', animation: 'fadeInDown 0.3s ease-out' }}>
-          <CheckCircle2 size={16} strokeWidth={2.5} /> Negosyante Tag Activated!
+          <CheckCircle2 size={16} strokeWidth={2.5} /> {typeof showToast === 'string' ? showToast : "Negosyante Tag Activated!"}
         </div>
       )}
 
@@ -1085,29 +1020,23 @@ export default function GAgadApp() {
         </div>
       )}
 
-      {/* Terms and Conditions Modal */}
+      {/* Terms and Conditions Modal Popup (Dark Style) */}
       {showTermsModal && (
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', animation: 'fadeIn 0.2s ease-out' }}>
-          <div style={{ backgroundColor: 'white', padding: '24px', borderTopLeftRadius: '24px', borderTopRightRadius: '24px', animation: 'fadeInDown 0.3s ease-out', transform: 'translateY(0)' }}>
-            <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#0F172A', marginBottom: '12px' }}>Terms and Conditions</h2>
-            <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', border: '1px solid #E2E8F0', marginBottom: '24px', maxHeight: '30vh', overflowY: 'auto' }}>
-              <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', marginBottom: '12px' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.2s ease-out' }}>
+          <div style={{ width: '85%', backgroundColor: '#475569', backgroundImage: 'linear-gradient(180deg, #475569 0%, #1E293B 100%)', padding: '24px', borderRadius: '16px', color: 'white', boxShadow: '0 16px 32px rgba(15, 23, 42, 0.5)', animation: 'bounceIn 0.3s ease-out' }}>
+            <h2 style={{ fontSize: '16px', fontWeight: '800', color: '#F8FAFC', marginBottom: '16px', textAlign: 'center' }}>Terms and Conditions</h2>
+            <div style={{ backgroundColor: 'rgba(255,255,255,0.1)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)', marginBottom: '24px', maxHeight: '30vh', overflowY: 'auto' }}>
+              <p style={{ fontSize: '13px', color: '#E2E8F0', lineHeight: '1.5', marginBottom: '12px' }}>
                 Sa pagkuha ng <strong>₱{selectedFloatAmount.toLocaleString()} GAgad Float</strong>, ikaw ay sumasang-ayon sa mga sumusunod:
               </p>
-              <ul style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', paddingLeft: '20px', margin: 0 }}>
+              <ul style={{ fontSize: '13px', color: '#E2E8F0', lineHeight: '1.5', paddingLeft: '20px', margin: 0 }}>
                 <li style={{ marginBottom: '8px' }}>Ang <strong>{customDeductRate}%</strong> ng bawat QR Ph transaction ay awtomatikong ibabawas bilang pambayad.</li>
                 <li style={{ marginBottom: '8px' }}>Walang fixed due date. Automatic, % of daily sales deduction, na may <strong>30-day cap</strong>.</li>
                 <li style={{ marginBottom: '8px' }}>Maaari kang kumuha ulit ng panibagong float kapag 100% nang bayad ang kasalukuyan.</li>
               </ul>
             </div>
             
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <button 
-                onClick={() => setShowTermsModal(false)}
-                style={{ flex: 1, padding: '14px', backgroundColor: '#F1F5F9', color: '#475569', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '14px' }}
-              >
-                Cancel
-              </button>
+            <div style={{ backgroundColor: 'white', padding: '12px', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
               <button 
                 onClick={() => {
                   setShowTermsModal(false);
@@ -1119,11 +1048,81 @@ export default function GAgadApp() {
                     setCurrentScreen("DASHBOARD");
                   }, 2000);
                 }}
-                style={{ flex: 1, padding: '14px', backgroundColor: '#005CEE', color: 'white', borderRadius: '24px', border: 'none', fontWeight: '700', fontSize: '14px' }}
+                style={{ width: '100%', padding: '12px', backgroundColor: '#005CEE', color: 'white', borderRadius: '12px', border: 'none', fontWeight: '800', fontSize: '14px', cursor: 'pointer' }}
               >
-                I Agree
+                I Agree to Terms
               </button>
             </div>
+            
+            <button 
+              onClick={() => setShowTermsModal(false)}
+              style={{ marginTop: '12px', width: '100%', padding: '8px', backgroundColor: 'transparent', color: 'rgba(255,255,255,0.7)', border: 'none', fontSize: '12px', cursor: 'pointer' }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Typhoon Modal Popup */}
+      {isTyphoon && (
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.2s ease-out' }}>
+          <div style={{ width: '85%', backgroundColor: '#475569', backgroundImage: 'linear-gradient(180deg, #475569 0%, #1E293B 100%)', padding: '16px', borderRadius: '16px', color: 'white', boxShadow: '0 16px 32px rgba(15, 23, 42, 0.5)', animation: 'bounceIn 0.3s ease-out' }}>
+            <p style={{ fontSize: '12px', fontWeight: '600', marginBottom: '16px', lineHeight: '1.4' }}>
+              ⚠️ PAGASA SIGNAL #3 DETECTED. Heavy rainfall warning in your registered area.
+            </p>
+            {/* Hourly Forecast */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: '16px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '11px', fontWeight: '600' }}>Ngayon</span>
+                <Sun size={20} color="#FDE047" fill="#FDE047" />
+                <span style={{ fontSize: '14px', fontWeight: '700' }}>32°</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '11px', fontWeight: '600' }}>2 PM</span>
+                <Sun size={20} color="#FDE047" fill="#FDE047" />
+                <span style={{ fontSize: '14px', fontWeight: '700' }}>34°</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '11px', fontWeight: '600' }}>3 PM</span>
+                <Cloud size={20} color="#E2E8F0" fill="#E2E8F0" />
+                <span style={{ fontSize: '14px', fontWeight: '700' }}>31°</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '11px', fontWeight: '600' }}>4 PM</span>
+                <CloudRain size={20} color="#93C5FD" fill="#93C5FD" />
+                <span style={{ fontSize: '14px', fontWeight: '700' }}>28°</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '11px', fontWeight: '600' }}>5 PM</span>
+                <CloudRain size={20} color="#93C5FD" fill="#93C5FD" />
+                <span style={{ fontSize: '14px', fontWeight: '700' }}>26°</span>
+              </div>
+            </div>
+
+            <div style={{ backgroundColor: 'white', padding: '12px', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+              <p style={{ fontSize: '13px', color: '#1E293B', fontWeight: '800', textAlign: 'center' }}>
+                Available: ₱300 Storm-Day Relief
+              </p>
+              <button 
+                onClick={() => {
+                  setWalletBalance(prev => prev + 300);
+                  setIsTyphoon(false);
+                  setShowToast("₱300 Payout Received!");
+                  setTimeout(() => setShowToast(false), 3000);
+                }}
+                style={{ width: '100%', padding: '12px', backgroundColor: '#10B981', color: 'white', borderRadius: '12px', border: 'none', fontWeight: '800', fontSize: '14px', cursor: 'pointer' }}
+              >
+                Claim ₱300 to GCash
+              </button>
+            </div>
+            
+            <button 
+              onClick={() => setIsTyphoon(false)}
+              style={{ marginTop: '12px', width: '100%', padding: '8px', backgroundColor: 'transparent', color: 'rgba(255,255,255,0.7)', border: 'none', fontSize: '12px', cursor: 'pointer' }}
+            >
+              Cancel
+            </button>
           </div>
         </div>
       )}
