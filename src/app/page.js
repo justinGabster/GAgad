@@ -653,51 +653,68 @@ export default function GAgadApp() {
               <h3 style={{ fontSize: '14px', fontWeight: '800', color: '#1E293B' }}>Negosyo Insights & Pattern</h3>
             </div>
             
-            <p style={{ fontSize: '13px', color: '#475569', marginBottom: '16px', lineHeight: '1.4' }}>
-              {insight?.title} ({insight?.copy.substring(0, 80)}...)
-            </p>
-
-            {/* Mini 7-Day Trend Chart */}
-            <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', marginBottom: '16px', border: '1px solid #F1F5F9' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', height: '70px', marginBottom: '8px', gap: '4px' }}>
-                {[{ d: 'M', h: '40%' }, { d: 'T', h: '45%' }, { d: 'W', h: '50%' }, { d: 'T', h: '55%' }, { d: 'F', h: '70%' }, { d: 'S', h: '95%', val: '₱3.8k' }, { d: 'S', h: '85%' }].map((day, i) => (
-                  <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-                    {day.val && <span style={{ fontSize: '9px', fontWeight: '800', color: '#005CEE', marginBottom: '-2px' }}>{day.val}</span>}
-                    <div style={{ width: '100%', height: day.h, backgroundColor: i >= 5 ? '#005CEE' : '#E2E8F0', borderRadius: '4px 4px 0 0' }}></div>
-                  </div>
-                ))}
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 2px' }}>
-                {['M','T','W','T','F','S','S'].map((day, i) => (
-                  <span key={i} style={{ fontSize: '10px', color: '#64748B', fontWeight: i >= 5 ? '800' : '500' }}>{day}</span>
-                ))}
+            {/* Weekly Sales Chart Fix */}
+            <div className="weekly-chart-card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', height: '75px', padding: '0 6px' }}>
+                {/* Monday */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', width: '28px' }}>
+                  <div style={{ width: '10px', height: '25px', background: '#CBD5E1', borderRadius: '4px 4px 0 0' }}></div>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 500 }}>M</span>
+                </div>
+                {/* Tuesday */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', width: '28px' }}>
+                  <div style={{ width: '10px', height: '30px', background: '#CBD5E1', borderRadius: '4px 4px 0 0' }}></div>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 500 }}>T</span>
+                </div>
+                {/* Wednesday */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', width: '28px' }}>
+                  <div style={{ width: '10px', height: '32px', background: '#CBD5E1', borderRadius: '4px 4px 0 0' }}></div>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 500 }}>W</span>
+                </div>
+                {/* Thursday */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', width: '28px' }}>
+                  <div style={{ width: '10px', height: '38px', background: '#CBD5E1', borderRadius: '4px 4px 0 0' }}></div>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 500 }}>T</span>
+                </div>
+                {/* Friday */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', width: '28px' }}>
+                  <div style={{ width: '10px', height: '48px', background: '#93C5FD', borderRadius: '4px 4px 0 0' }}></div>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 500 }}>F</span>
+                </div>
+                {/* Saturday (Peak) */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', width: '28px', position: 'relative' }}>
+                  <span style={{ position: 'absolute', top: '-18px', fontSize: '10px', fontWeight: 700, color: '#005CEE' }}>₱3.8k</span>
+                  <div style={{ width: '10px', height: '62px', background: '#005CEE', borderRadius: '4px 4px 0 0' }}></div>
+                  <span style={{ fontSize: '11px', color: '#005CEE', fontWeight: 700 }}>S</span>
+                </div>
+                {/* Sunday */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', width: '28px' }}>
+                  <div style={{ width: '10px', height: '52px', background: '#005CEE', borderRadius: '4px 4px 0 0' }}></div>
+                  <span style={{ fontSize: '11px', color: '#005CEE', fontWeight: 700 }}>S</span>
+                </div>
               </div>
             </div>
 
             {/* Monthly Product Trend Widget */}
             <div style={{ marginBottom: '16px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <span style={{ fontSize: '12px', fontWeight: '600', color: '#1E293B' }}>{seasonalData.badge}</span>
-                <div style={{ backgroundColor: '#DCFCE7', color: '#15803D', padding: '4px 8px', borderRadius: '12px', fontSize: '10px', fontWeight: '700' }}>
-                  🔥 Mataas ang Demand
-                </div>
+              <div className="seasonal-header-row">
+                <span className="seasonal-title">{seasonalData.badge}</span>
+                <div className="demand-badge">🔥 Mataas ang Demand</div>
               </div>
               
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <div className="trending-chips-container">
                 {seasonalData.trending.map((t, idx) => (
-                  <span key={idx} style={{ padding: '4px 8px', backgroundColor: '#F8FAFC', color: '#334155', fontSize: '11px', fontWeight: '600', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
-                    {t.name} <b style={{ color: '#16A34A' }}>{t.growth}</b>
+                  <span key={idx} className="product-chip">
+                    {t.name} <b>{t.growth}</b>
                   </span>
                 ))}
               </div>
             </div>
 
             {/* Seasonal Action Nudge Card */}
-            <div style={{ display: 'flex', gap: '10px', backgroundColor: '#FFFBEB', padding: '12px', borderRadius: '12px', border: '1px solid #FDE68A', alignItems: 'flex-start' }}>
+            <div className="seasonal-tip-card">
               <span style={{ fontSize: '16px', marginTop: '2px' }}>💡</span>
-              <p style={{ fontSize: '12px', color: '#92400E', lineHeight: '1.4' }}>
-                <strong>Seasonal Tip:</strong> {seasonalData.tip}
-              </p>
+              <p className="seasonal-tip-text"><strong>Seasonal Tip:</strong> {seasonalData.tip}</p>
             </div>
           </div>
 
