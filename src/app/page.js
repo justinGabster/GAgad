@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { UserCircle, HelpCircle, ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, Activity, Zap, Shield, Sun, CloudRain, Send, Smartphone, Landmark, Receipt, PiggyBank, CreditCard, Gift, Bus, Handshake, FastForward, QrCode, Home, Mail, User } from "lucide-react";
+import { UserCircle, HelpCircle, ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, Activity, Zap, Shield, Sun, CloudRain, Send, Smartphone, Landmark, Receipt, PiggyBank, CreditCard, Gift, Bus, Handshake, FastForward, QrCode, Home, Mail, User, RotateCcw } from "lucide-react";
 import Image from 'next/image';
 
 // Mock data and state shape
@@ -252,7 +252,10 @@ export default function GAgadApp() {
           <span style={{ fontSize: '11px', fontWeight: '600' }}>Transactions</span>
         </div>
         
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', color: '#94A3B8' }}>
+        <div 
+          onClick={() => setCurrentScreen("ONBOARDING")}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', color: '#94A3B8', cursor: 'pointer' }}
+        >
           <User size={24} strokeWidth={2} />
           <span style={{ fontSize: '11px', fontWeight: '600' }}>Profile</span>
         </div>
@@ -262,6 +265,24 @@ export default function GAgadApp() {
 
   // --- SCREEN 2: NEGOSYANTE TAG ONBOARDING ---
   // --- SCREEN 2: ONBOARDING / NEGOSYANTE SETUP ---
+  const ARCHETYPE_CONFIG = {
+    "wet-market": {
+      "₱1,000 - ₱2,500":  { min: 500,  rec: 800,  max: 1200, deduct: "8%",  release: "3:30 AM" },
+      "₱2,500 - ₱5,000":  { min: 1000, rec: 1800, max: 2500, deduct: "8%",  release: "3:30 AM" },
+      "₱5,000+": { min: 2000, rec: 3500, max: 5000, deduct: "10%", release: "3:30 AM" }
+    },
+    "street-food": {
+      "₱1,000 - ₱2,500":  { min: 500,  rec: 800,  max: 1200, deduct: "6%",  release: "1:00 PM" },
+      "₱2,500 - ₱5,000":  { min: 1000, rec: 1500, max: 2500, deduct: "7%",  release: "1:00 PM" },
+      "₱5,000+": { min: 1500, rec: 2500, max: 3500, deduct: "8%",  release: "1:00 PM" }
+    },
+    "sari-sari": {
+      "₱1,000 - ₱2,500":  { min: 500,  rec: 1000, max: 1500, deduct: "5%",  release: "8:00 AM" },
+      "₱2,500 - ₱5,000":  { min: 1000, rec: 1800, max: 2500, deduct: "5%",  release: "8:00 AM" },
+      "₱5,000+": { min: 2000, rec: 3000, max: 4500, deduct: "6%",  release: "8:00 AM" }
+    }
+  };
+
   const getArchetypeInsight = () => {
     if (!vendorType && !restockTime && !dailySales) return null;
 
@@ -277,73 +298,50 @@ export default function GAgadApp() {
 
     let title = "";
     let copy = "";
-    let suggestedFloat = "₱--";
-    let releaseTime = "--:-- AM";
-    let autoDeduct = "8%";
-    let floatOptions = [500, 800, 1200];
+    
+    let archetypeKey = "wet-market";
+    if (vendorType === "🍢 Street Food") archetypeKey = "street-food";
+    if (vendorType === "🏪 Sari-Sari") archetypeKey = "sari-sari";
+    
+    // Default to lowest tier if invalid
+    const salesKey = dailySales || "₱1,000 - ₱2,500";
+    const config = ARCHETYPE_CONFIG[archetypeKey][salesKey] || ARCHETYPE_CONFIG[archetypeKey]["₱1,000 - ₱2,500"];
+    
+    let suggestedFloat = `₱${config.min.toLocaleString()} - ₱${config.max.toLocaleString()}`;
+    let releaseTime = config.release;
+    let autoDeduct = config.deduct;
+    let floatOptions = [config.min, config.rec, config.max];
 
     if (vendorType === "🐟 Isda / Karne") {
       if (restockTime === "Madaling Araw (3 AM - 5 AM)") {
         if (dailySales === "₱1,000 - ₱2,500") {
           title = "⚡ Katugma ng 12,400+ Wet Market Vendors";
-          copy = "Karamihan sa namimili tuwing 4 AM bagsakan ay nakakabawi ng benta bago mag-11 AM. Magsisimula sa ₱800 - ₱1,200 float na ire-release ng madaling araw.";
-          suggestedFloat = "₱800 - ₱1,200";
-          releaseTime = "3:30 AM";
-          autoDeduct = "8%";
-          floatOptions = [500, 800, 1200];
+          copy = `Karamihan sa namimili tuwing 4 AM bagsakan ay nakakabawi ng benta bago mag-11 AM. Magsisimula sa ${suggestedFloat} float na ire-release ng madaling araw.`;
         } else if (dailySales === "₱2,500 - ₱5,000") {
           title = "⚡ Katugma ng 8,900+ Seafood/Meat Vendors";
-          copy = "Mataas na kita tuwing umaga ang na-detect. Naka-set ang initial dawn float mo sa ₱1,500 - ₱2,500 para may pandagdag ka sa pamamakyaw.";
-          suggestedFloat = "₱1,500 - ₱2,500";
-          releaseTime = "3:30 AM";
-          autoDeduct = "8%";
-          floatOptions = [1000, 1500, 2500];
+          copy = `Mataas na kita tuwing umaga ang na-detect. Naka-set ang initial dawn float mo sa ${suggestedFloat} para may pandagdag ka sa pamamakyaw.`;
         } else {
           title = "⚡ High-Volume Wet Market Archetype";
-          copy = "Nakalaan para sa malakihang pamamakyaw tuwing madaling araw na may ₱3,000+ na initial float.";
-          suggestedFloat = "₱3,000 - ₱5,000";
-          releaseTime = "3:30 AM";
-          autoDeduct = "10%";
-          floatOptions = [2000, 3000, 5000];
+          copy = `Nakalaan para sa malakihang pamamakyaw tuwing madaling araw na may ₱${config.min.toLocaleString()}+ na initial float.`;
         }
       } else {
         title = "🐟 Morning Market Archetype";
         copy = "Naka-set para sa mga nagtitinda sa palengke tuwing umaga na may malakas na benta mula 7 AM - 12 PM.";
-        suggestedFloat = "₱1,000";
-        releaseTime = "5:30 AM";
-        autoDeduct = "8%";
-        floatOptions = [800, 1000, 1500];
       }
     } else if (vendorType === "🥬 Gulay / Prutas") {
       title = "🌱 Katugma ng 9,200+ Vegetable & Fruit Vendors";
       copy = "Naka-on ang spoilage buffer. Naka-set ang float at auto-deductions para sa unti-unting benta sa buong araw. 🌧️ Awtomatikong naka-link ang Storm-Day Parametric relief.";
-      suggestedFloat = "₱600 - ₱1,500";
-      releaseTime = "5:00 AM";
-      autoDeduct = "7%";
-      floatOptions = [600, 1000, 1500];
     } else if (vendorType === "🍢 Street Food") {
       if (dailySales === "₱5,000+") {
         title = "🍢 Katugma ng High-Turnover Food Vendors";
         copy = "Naka-set para sa malakasang paghahanda at pamimili tuwing hapon at pagbabayad kapag malakas ang benta sa gabi.";
-        suggestedFloat = "₱2,000 - ₱3,500";
-        releaseTime = "1:00 PM";
-        autoDeduct = "8%";
-        floatOptions = [1500, 2000, 3500];
       } else {
         title = "🍢 Katugma ng 15,100+ Food & Merienda Vendors";
-        copy = "Kadalasan ang pamimili ng sangkap ay sa hapon at lumalakas ang benta mula 5 PM - 9 PM. Ang float ay ire-release ng 1:00 PM.";
-        suggestedFloat = "₱500 - ₱1,500";
-        releaseTime = "1:00 PM";
-        autoDeduct = "6%";
-        floatOptions = [500, 1000, 1500];
+        copy = `Kadalasan ang pamimili ng sangkap ay sa hapon at lumalakas ang benta mula 5 PM - 9 PM. Ang float ay ire-release ng ${releaseTime}.`;
       }
     } else if (vendorType === "🏪 Sari-Sari") {
       title = "🏪 Katugma ng 22,000+ Neighborhood Retailers";
-      copy = "Tuloy-tuloy ang benta sa buong araw. Ang float ay naka-set para sa araw ng delivery at may maliit na 5% auto-deductions.";
-      suggestedFloat = "₱1,000 - ₱2,500";
-      releaseTime = "8:00 AM";
-      autoDeduct = "5%";
-      floatOptions = [1000, 1500, 2500];
+      copy = `Tuloy-tuloy ang benta sa buong araw. Ang float ay naka-set para sa araw ng delivery at may maliit na ${autoDeduct} auto-deductions.`;
     } else {
       title = "🔄 Sinusuri ang Profile...";
       copy = "Pakipili ang iyong pangunahing tinda para makita ang katugmang archetype para sa iyong negosyo.";
@@ -679,6 +677,26 @@ export default function GAgadApp() {
                     <p style={{ fontSize: '15px', fontWeight: '700', color: '#005CEE' }}>₱{remaining.toFixed(2)}</p>
                   </div>
                 </div>
+
+                {/* Start Again Action (Only when 100% Repaid) */}
+                {progressPercent === 100 && (
+                  <div style={{ marginTop: '16px', animation: 'fadeIn 0.5s' }}>
+                    <button 
+                      onClick={() => {
+                        setFloatBalance(0);
+                        setRepaidAmount(0);
+                        setCurrentScreen("MAIN_HUB");
+                      }}
+                      style={{
+                        width: '100%', padding: '14px', backgroundColor: '#10B981', color: 'white', 
+                        borderRadius: '12px', border: 'none', fontWeight: '700', fontSize: '14px',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer'
+                      }}
+                    >
+                      <RotateCcw size={18} strokeWidth={2.5} /> Kumuha Ulit ng Float
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Card 2: Smart Merchant Insight Nudge */}
