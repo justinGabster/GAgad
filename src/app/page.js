@@ -483,18 +483,20 @@ export default function GAgadApp() {
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px', color: 'white' }}>
             <ArrowLeft size={24} onClick={() => setCurrentScreen("HOME")} style={{ cursor: 'pointer', marginRight: '16px' }} />
             <h1 style={{ fontSize: '18px', fontWeight: '700' }}>GAgad Negosyo Hub</h1>
-            <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+            <div style={{ marginLeft: 'auto' }}>
               <UserCircle size={28} color="white" opacity={0.8} />
+            </div>
+          </div>
+          <div style={{ padding: '0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <h2 style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>Aling Tess Fresh Fish • Palengke</h2>
               <div 
                 onClick={() => setShowZoomedQR(true)}
                 style={{ backgroundColor: 'white', borderRadius: '4px', padding: '3px', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
               >
-                <QrCode size={14} color="#005CEE" />
+                <QrCode size={16} color="#005CEE" />
               </div>
             </div>
-          </div>
-          <div style={{ padding: '0' }}>
-            <h2 style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>Aling Tess Fresh Fish • Palengke</h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
               <div style={{ width: '8px', height: '8px', backgroundColor: '#10B981', borderRadius: '50%' }}></div>
               <span style={{ fontSize: '12px', color: '#D0E2FF' }}>Negosyante Tag: Good Standing</span>
