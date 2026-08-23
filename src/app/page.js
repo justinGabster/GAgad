@@ -1009,7 +1009,7 @@ export default function GAgadApp() {
             simulateQRTransaction();
             setCurrentScreen("DASHBOARD");
           }}
-          style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', animation: 'fadeIn 0.2s ease-out' }}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', animation: 'fadeIn 0.2s ease-out' }}
         >
           <div style={{ backgroundColor: 'white', padding: '32px', borderRadius: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', transform: 'scale(1.1)', boxShadow: '0 16px 32px rgba(0,0,0,0.2)' }}>
             <h2 style={{ fontSize: '16px', fontWeight: '800', color: '#005CEE', marginBottom: '24px' }}>Aling Tess Fresh Fish</h2>
@@ -1026,7 +1026,7 @@ export default function GAgadApp() {
 
       {/* Terms and Conditions Modal */}
       {showTermsModal && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', animation: 'fadeIn 0.2s ease-out' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', animation: 'fadeIn 0.2s ease-out' }}>
           <div style={{ backgroundColor: 'white', padding: '24px', borderTopLeftRadius: '24px', borderTopRightRadius: '24px', animation: 'fadeInDown 0.3s ease-out', transform: 'translateY(0)' }}>
             <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#0F172A', marginBottom: '12px' }}>Terms and Conditions</h2>
             <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', border: '1px solid #E2E8F0', marginBottom: '24px', maxHeight: '30vh', overflowY: 'auto' }}>
