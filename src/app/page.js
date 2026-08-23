@@ -25,6 +25,8 @@ export default function GAgadApp() {
   const [floatBalance, setFloatBalance] = useState(0); // How much float they have taken
   const [repaidAmount, setRepaidAmount] = useState(0);
   const [selectedFloatAmount, setSelectedFloatAmount] = useState(800);
+  const [customDeductRate, setCustomDeductRate] = useState(8);
+  const [sliderSales, setSliderSales] = useState(4000);
   
   // Simulation State
   const [transactions, setTransactions] = useState([]);
@@ -549,9 +551,57 @@ export default function GAgadApp() {
                   ))}
                 </div>
 
-                <p style={{ fontSize: '12px', color: '#475569', marginBottom: '16px', lineHeight: '1.4' }}>
-                  Awtomatikong binabawas ({deductRate}) sa bawat QR Ph benta. Walang fixed due date.
-                </p>
+                <div style={{ marginBottom: '16px' }}>
+                  <p style={{ fontSize: '13px', fontWeight: '700', color: '#1E293B', marginBottom: '8px' }}>Paano ang bayad?</p>
+                  <p style={{ fontSize: '12px', color: '#475569', marginBottom: '12px', lineHeight: '1.4' }}>
+                    Walang fixed due date. Awtomatikong <strong>{customDeductRate}% kaltas</strong> sa bawat QR Ph benta hanggang matapos.
+                  </p>
+                  
+                  {/* Percent Selector */}
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+                    {[5, 6, 7, 8].map(pct => (
+                      <button
+                        key={pct}
+                        onClick={() => setCustomDeductRate(pct)}
+                        style={{
+                          flex: 1, padding: '8px 0', borderRadius: '8px', fontSize: '13px', fontWeight: '700',
+                          border: customDeductRate === pct ? '2px solid #005CEE' : '1px solid #E2E8F0',
+                          backgroundColor: customDeductRate === pct ? '#EFF6FF' : 'white',
+                          color: customDeductRate === pct ? '#005CEE' : '#475569',
+                        }}
+                      >
+                        {pct}%
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Slider Card */}
+                  <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                      <span style={{ fontSize: '13px', color: '#334155', fontWeight: '600' }}>Estimated Daily Sales</span>
+                      <span style={{ fontSize: '14px', fontWeight: '800' }}>₱{sliderSales.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
+                    </div>
+                    <input 
+                      type="range" 
+                      min="500" 
+                      max="10000" 
+                      step="100" 
+                      value={sliderSales} 
+                      onChange={(e) => setSliderSales(Number(e.target.value))}
+                      style={{ width: '100%', marginBottom: '16px' }}
+                    />
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <div style={{ textAlign: 'center' }}>
+                        <div style={{ fontSize: '11px', color: '#64748B', marginBottom: '4px' }}>Daily Kaltas</div>
+                        <div style={{ fontSize: '16px', fontWeight: '800', color: '#10B981' }}>₱{Math.round(sliderSales * (customDeductRate / 100))}</div>
+                      </div>
+                      <div style={{ textAlign: 'center' }}>
+                        <div style={{ fontSize: '11px', color: '#64748B', marginBottom: '4px' }}>Settlement in</div>
+                        <div style={{ fontSize: '16px', fontWeight: '800', color: '#0F172A' }}>~{Math.ceil(currentSelected / (sliderSales * (customDeductRate / 100)))} days</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <button 
                   onClick={() => setShowTermsModal(true)}
@@ -1045,7 +1095,7 @@ export default function GAgadApp() {
                 Sa pagkuha ng <strong>₱{selectedFloatAmount.toLocaleString()} GAgad Float</strong>, ikaw ay sumasang-ayon sa mga sumusunod:
               </p>
               <ul style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', paddingLeft: '20px', margin: 0 }}>
-                <li style={{ marginBottom: '8px' }}>Ang <strong>{ARCHETYPE_CONFIG[vendorType === "🏪 Sari-Sari" ? "sari-sari" : vendorType === "🍢 Street Food" ? "street-food" : "wet-market"][dailySales]?.deduct || "8%"}</strong> ng bawat QR Ph transaction ay awtomatikong ibabawas bilang pambayad.</li>
+                <li style={{ marginBottom: '8px' }}>Ang <strong>{customDeductRate}%</strong> ng bawat QR Ph transaction ay awtomatikong ibabawas bilang pambayad.</li>
                 <li style={{ marginBottom: '8px' }}>Walang fixed due date. Automatic, % of daily sales deduction, na may <strong>30-day cap</strong>.</li>
                 <li style={{ marginBottom: '8px' }}>Maaari kang kumuha ulit ng panibagong float kapag 100% nang bayad ang kasalukuyan.</li>
               </ul>
